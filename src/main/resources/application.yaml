@@ -1,0 +1,20 @@
+camunda.bpm:
+  admin-user:
+    id: demo
+    password: demo
+    firstName: Demo
+    lastName: Demo
+  filter:
+    create: All Tasks
+  job-execution:
+    max-wait: 10000
+server.port: 8080
+
+spring:
+  profiles:
+    active: dev
+project: "cloneIssueAndCreateSubTasks"
+jira :
+  user: "vladyslav.kharchenko@sytoss.com"
+  password: "ATATT3xFfGF0nIlHqyI8LBl2oF08X4ZKrY_7wOw2ekauwktb7KiBdPamAWncJzd8k8lg-ANrheYtDnz-KtbwhqyZDIDAKghvyoiivQxT4RTduaXKmFf0s2b-5ElQB2JRA8DWsB5HsOySmcu09ZOFffiCxHXLmaz5vYx0xvLICqCL1gi9rRsAiMU=14AA3540"
+  url: "https://sytoss.atlassian.net"
