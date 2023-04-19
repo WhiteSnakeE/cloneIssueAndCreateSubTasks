@@ -5,7 +5,7 @@ import org.example.repository.JiraRepositoryClone;
 
 public class JiraRepositoryCloneMock implements JiraRepositoryClone {
     @Override
-    public Issue cloneIssue (String key) {
+    public Issue cloneIssue () {
         return null;
     }
 }

@@ -26,7 +26,6 @@ public class JiraServiceCheck {
         if (issue.getIssueLinks() == null) {
             return false;
         }
-        
         for (IssueLink issueLink : Objects.requireNonNull(issue.getIssueLinks())) {
             if (!issueLink.getIssueLinkType().getName().equals("Cloners")) {
                 return true;

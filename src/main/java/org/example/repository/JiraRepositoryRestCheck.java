@@ -7,6 +7,7 @@ import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import lombok.extern.slf4j.Slf4j;
 import org.example.exeptions.IssueNotExistException;
+import org.example.model.IssueInstance;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -18,10 +19,11 @@ public class JiraRepositoryRestCheck implements JiraRepositoryCheck {
 
     private final SearchRestClient searchRestClient;
 
-    private Issue issue;
+    private IssueInstance issueInstance;
 
-    public JiraRepositoryRestCheck (JiraRestClient jiraRestClient) {
+    public JiraRepositoryRestCheck (JiraRestClient jiraRestClient, IssueInstance issueInstance) {
         searchRestClient = jiraRestClient.getSearchClient();
+        this.issueInstance = issueInstance;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class JiraRepositoryRestCheck implements JiraRepositoryCheck {
         SearchResult searchResult;
         try {
             searchResult = searchRestClient.searchJql(jql, 1, 0, null).claim();
-            issue = searchResult.getIssues().iterator().next();
+            issueInstance.setIssue(searchResult.getIssues().iterator().next());
             return searchResult;
         } catch (RestClientException e) {
 
@@ -39,7 +41,7 @@ public class JiraRepositoryRestCheck implements JiraRepositoryCheck {
 
     @Override
     public Issue getNeedIssue () {
-      return issue;
+      return issueInstance.getIssue();
     }
 
 }
