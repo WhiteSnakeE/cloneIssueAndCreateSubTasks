@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 @Profile({"dev"})
-public class JiraRepositoryMock implements JiraRepositoryCheck {
+public class JiraRepositoryCheckMock implements JiraRepositoryCheck {
 
     public String name;
 
