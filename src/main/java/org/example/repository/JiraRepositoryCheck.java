@@ -4,7 +4,7 @@ import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 
 
-public interface JiraRepository {
+public interface JiraRepositoryCheck {
 
     SearchResult isProjectExist(String jql);
 

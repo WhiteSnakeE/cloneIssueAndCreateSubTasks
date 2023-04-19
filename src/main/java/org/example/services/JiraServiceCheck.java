@@ -2,27 +2,27 @@ package org.example.services;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
-import org.example.repository.JiraRepository;
+import org.example.repository.JiraRepositoryCheck;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 
 @Service
-public class JiraService {
+public class JiraServiceCheck {
     private static String jql = "key = ";
-    private final JiraRepository jiraRepository;
+    private final JiraRepositoryCheck jiraRepositoryCheck;
 
-    public JiraService (JiraRepository jiraRepository) {
-        this.jiraRepository = jiraRepository;
+    public JiraServiceCheck (JiraRepositoryCheck jiraRepositoryCheck) {
+        this.jiraRepositoryCheck = jiraRepositoryCheck;
     }
 
     public String checkIfIssueExist (String key) {
-        return jiraRepository.isProjectExist(jql + key).getIssues().iterator().next().getKey();
+        return jiraRepositoryCheck.isProjectExist(jql + key).getIssues().iterator().next().getKey();
     }
 
     public boolean checkIfTestCasesExist () {
-        Issue issue = jiraRepository.getNeedIssue();
+        Issue issue = jiraRepositoryCheck.getNeedIssue();
         if (issue.getIssueLinks() == null) {
             return false;
         }

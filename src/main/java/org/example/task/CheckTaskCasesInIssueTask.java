@@ -4,22 +4,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.example.ProcessEnv;
-import org.example.services.JiraService;
+import org.example.services.JiraServiceCheck;
 import org.springframework.stereotype.Component;
 
 @Component("CheckTaskCasesInIssue")
 @Slf4j
 public class CheckTaskCasesInIssueTask implements JavaDelegate {
 
-    public final JiraService jiraService;
+    public final JiraServiceCheck jiraServiceCheck;
 
-    public CheckTaskCasesInIssueTask (JiraService jiraService) {
-        this.jiraService = jiraService;
+    public CheckTaskCasesInIssueTask (JiraServiceCheck jiraServiceCheck) {
+        this.jiraServiceCheck = jiraServiceCheck;
     }
 
     @Override
     public void execute (DelegateExecution delegateExecution)  {
-        boolean isTestCasesPresent = jiraService.checkIfTestCasesExist();
+        boolean isTestCasesPresent = jiraServiceCheck.checkIfTestCasesExist();
         ProcessEnv processEnv = new ProcessEnv(delegateExecution);
         processEnv.setAreNeedIssuesPresent(isTestCasesPresent);
         log.info("Are tasks present? {}",processEnv.getAreNeedIssuesPresent());

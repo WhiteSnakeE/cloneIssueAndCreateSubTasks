@@ -2,7 +2,7 @@ package unit;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.example.ProcessEnv;
-import org.example.services.JiraService;
+import org.example.services.JiraServiceCheck;
 import org.example.task.FindIssueByProjectKeyTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ public class FindIssueByProjectKeyTest {
     @Mock
     private DelegateExecution execution;
     @Mock
-    private JiraService jiraService;
+    private JiraServiceCheck jiraServiceCheck;
 
     @InjectMocks
     private FindIssueByProjectKeyTask task;
@@ -30,7 +30,7 @@ public class FindIssueByProjectKeyTest {
 
         when(execution.getVariable("IssueKey")).thenReturn(projectKey);
 
-        when(jiraService.checkIfIssueExist(projectKey)).thenReturn(projectKey);
+        when(jiraServiceCheck.checkIfIssueExist(projectKey)).thenReturn(projectKey);
 
 
         task.execute(execution);

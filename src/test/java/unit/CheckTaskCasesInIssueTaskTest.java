@@ -2,9 +2,8 @@ package unit;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.example.ProcessEnv;
-import org.example.services.JiraService;
+import org.example.services.JiraServiceCheck;
 import org.example.task.CheckTaskCasesInIssueTask;
-import org.example.task.FindIssueByProjectKeyTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,13 +19,13 @@ public class CheckTaskCasesInIssueTaskTest {
     @Mock
     private DelegateExecution execution;
     @Mock
-    private JiraService jiraService;
+    private JiraServiceCheck jiraServiceCheck;
     @InjectMocks
     private CheckTaskCasesInIssueTask task;
 
     @Test
     public void givenIssue_whenCheckTestCases_thenReturnTrue () {
-        when(jiraService.checkIfTestCasesExist()).thenReturn(true);
+        when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(true);
         when(execution.getVariable(ProcessEnv.ARE_NEED_TASKS_PRESENT)).thenReturn(true);
         task.execute(execution);
         verify(execution).setVariable(ProcessEnv.ARE_NEED_TASKS_PRESENT, true);
@@ -34,7 +33,7 @@ public class CheckTaskCasesInIssueTaskTest {
 
     @Test
     public void givenIssue_whenCheckTestCases_thenReturnFalse () {
-        when(jiraService.checkIfTestCasesExist()).thenReturn(false);
+        when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(false);
         when(execution.getVariable(ProcessEnv.ARE_NEED_TASKS_PRESENT)).thenReturn(false);
         task.execute(execution);
         verify(execution).setVariable(ProcessEnv.ARE_NEED_TASKS_PRESENT, false);

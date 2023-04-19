@@ -13,14 +13,14 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 @Repository
 @Profile({"dev"})
-public class JiraRepositoryRest implements JiraRepository {
+public class JiraRepositoryRestCheck implements JiraRepositoryCheck {
 
 
     private final SearchRestClient searchRestClient;
 
     private Issue issue;
 
-    public JiraRepositoryRest (JiraRestClient jiraRestClient) {
+    public JiraRepositoryRestCheck (JiraRestClient jiraRestClient) {
         searchRestClient = jiraRestClient.getSearchClient();
     }
 
