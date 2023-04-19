@@ -1,8 +1,5 @@
 package org.example.services;
 
-import com.atlassian.jira.rest.client.api.domain.Issue;
-import com.atlassian.jira.rest.client.api.domain.SearchResult;
-import org.camunda.bpm.engine.delegate.BpmnError;
 import org.example.repository.JiraRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +14,7 @@ public class JiraService {
     }
 
     public String checkIfIssueExist (String key) {
-        jiraRepository.isProjectExist(jql + key).getIssues().iterator().next().getKey();
-        return key;
+        return jiraRepository.isProjectExist(jql + key).getIssues().iterator().next().getKey();
     }
 
 }

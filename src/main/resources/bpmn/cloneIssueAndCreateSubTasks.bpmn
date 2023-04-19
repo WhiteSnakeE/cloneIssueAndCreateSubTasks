@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_13y5ykp" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_13y5ykp" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
   <bpmn:process id="cloneIssueAndCreateSubTasks" name="cloneIssueAndCreateSubTasks" isExecutable="true">
     <bpmn:serviceTask id="FindIssueByProjectKeyTask" name="find issue by project key" camunda:asyncBefore="true" camunda:delegateExpression="${FindIssueByProjectKey}">
       <bpmn:incoming>Flow_0wpirkm</bpmn:incoming>
@@ -22,22 +22,14 @@
   <bpmn:error id="Error_10v08xa" name="SOLVIT_ERROR" errorCode="SOLVIT_ERROR" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="cloneIssueAndCreateSubTasks">
-      <bpmndi:BPMNEdge id="Flow_0wpirkm_di" bpmnElement="Flow_0wpirkm">
-        <di:waypoint x="218" y="120" />
-        <di:waypoint x="330" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_17r1onl_di" bpmnElement="Flow_17r1onl">
-        <di:waypoint x="430" y="120" />
-        <di:waypoint x="522" y="120" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_18ysom2_di" bpmnElement="FindIssueByProjectKeyTask">
         <dc:Bounds x="330" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_05u68r3_di" bpmnElement="ProcessEndedEndEvent">
-        <dc:Bounds x="522" y="102" width="36" height="36" />
+        <dc:Bounds x="532" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="504" y="145" width="75" height="14" />
+          <dc:Bounds x="514" y="145" width="75" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0e7vt2w_di" bpmnElement="ProcessStartedStartMessageEvent">
@@ -46,6 +38,14 @@
           <dc:Bounds x="163" y="145" width="79" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_17r1onl_di" bpmnElement="Flow_17r1onl">
+        <di:waypoint x="430" y="120" />
+        <di:waypoint x="532" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wpirkm_di" bpmnElement="Flow_0wpirkm">
+        <di:waypoint x="218" y="120" />
+        <di:waypoint x="330" y="120" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

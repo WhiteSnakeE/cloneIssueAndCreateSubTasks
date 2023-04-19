@@ -42,7 +42,7 @@ public class JiraRepositoryRest implements JiraRepository {
         try {
             return searchRestClient.searchJql(jql,1,0,null).claim();
         } catch (RestClientException e) {
-            //e.printStackTrace();
+
             throw new IssueNotExistException(e);
         }
     }
