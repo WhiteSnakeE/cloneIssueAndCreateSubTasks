@@ -8,5 +8,5 @@ public interface JiraRepositoryCheck {
 
     SearchResult isProjectExist(String jql);
 
-    Issue getNeedIssue ();
+
 }

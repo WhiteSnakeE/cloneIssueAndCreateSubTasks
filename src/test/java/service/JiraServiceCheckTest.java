@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import service.util.JiraRepositoryCheckMock;
+import service.util.JiraRepositoryIssueMock;
 
 import static org.mockito.Mockito.mock;
 
@@ -13,7 +14,7 @@ import static org.mockito.Mockito.mock;
 @ExtendWith(MockitoExtension.class)
 public class JiraServiceCheckTest {
 
-    JiraServiceCheck jiraServiceCheck = new JiraServiceCheck(new JiraRepositoryCheckMock());
+    JiraServiceCheck jiraServiceCheck = new JiraServiceCheck(new JiraRepositoryCheckMock(), new JiraRepositoryIssueMock());
 
     @Test
     public void checkIfIssueExistTest () {

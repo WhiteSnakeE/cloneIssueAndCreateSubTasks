@@ -5,9 +5,9 @@ import org.camunda.bpm.engine.delegate.VariableScope;
 public class ProcessEnv {
     public static final String ISSUE_KEY = "issueKey";
 
-    public static final String ARE_NEED_TASKS_PRESENT ="tasksArePresent";
-
+    public static final String ARE_NEED_TASKS_PRESENT = "tasksArePresent";
     private final VariableScope variableScope;
+
 
     public ProcessEnv (VariableScope variableScope) {
         this.variableScope = variableScope;

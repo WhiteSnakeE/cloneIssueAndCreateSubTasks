@@ -32,7 +32,6 @@ public class FindIssueByProjectKeyTest {
 
         when(jiraServiceCheck.checkIfIssueExist(projectKey)).thenReturn(projectKey);
 
-
         task.execute(execution);
 
         verify(execution).setVariable(ProcessEnv.ISSUE_KEY, projectKey);

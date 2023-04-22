@@ -38,10 +38,4 @@ public class JiraRepositoryRestCheck implements JiraRepositoryCheck {
             throw new IssueNotExistException(e);
         }
     }
-
-    @Override
-    public Issue getNeedIssue () {
-      return issueInstance.getIssue();
-    }
-
 }

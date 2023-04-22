@@ -3,6 +3,8 @@ package org.example.services;
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import org.example.repository.JiraRepositoryCheck;
+import org.example.repository.JiraRepositoryIssue;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -10,11 +12,15 @@ import java.util.Objects;
 
 @Service
 public class JiraServiceCheck {
-    private static String jql = "key = ";
+    private static final String jql = "key = ";
     private final JiraRepositoryCheck jiraRepositoryCheck;
 
-    public JiraServiceCheck (JiraRepositoryCheck jiraRepositoryCheck) {
+    private final JiraRepositoryIssue jiraRepositoryIssue;
+
+    public JiraServiceCheck (JiraRepositoryCheck jiraRepositoryCheck,
+            @Qualifier("jiraRepositoryRestIssue") JiraRepositoryIssue jiraRepositoryIssue) {
         this.jiraRepositoryCheck = jiraRepositoryCheck;
+        this.jiraRepositoryIssue = jiraRepositoryIssue;
     }
 
     public String checkIfIssueExist (String key) {
@@ -22,7 +28,7 @@ public class JiraServiceCheck {
     }
 
     public boolean checkIfTestCasesExist () {
-        Issue issue = jiraRepositoryCheck.getNeedIssue();
+        Issue issue = jiraRepositoryIssue.getIssue();
         if (issue.getIssueLinks() == null) {
             return false;
         }
