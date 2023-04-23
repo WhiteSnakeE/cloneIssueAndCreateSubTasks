@@ -8,8 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import service.util.JiraRepositoryCheckMock;
 import service.util.JiraRepositoryIssueMock;
 
-import static org.mockito.Mockito.mock;
-
 
 @ExtendWith(MockitoExtension.class)
 public class JiraServiceCheckTest {

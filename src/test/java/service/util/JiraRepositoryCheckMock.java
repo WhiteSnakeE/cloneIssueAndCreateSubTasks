@@ -25,12 +25,8 @@ public class JiraRepositoryCheckMock implements JiraRepositoryCheck {
         return new SearchResult(0, 1, 1, issueList);
 
     }
-    @Override
-    public Issue getNeedIssue (){
-        IssueLinkType issueLinkType = new IssueLinkType("Relates","relates to", IssueLinkType.Direction.OUTBOUND);
-        IssueLink issueLink = new IssueLink("FIXBIT-18",null,issueLinkType);
-        return new Issue(null, null, "FIXBIT-18", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, List.of(issueLink), null, null, null, null, null, null, null, null);
-    }
+
+
 
 
 }

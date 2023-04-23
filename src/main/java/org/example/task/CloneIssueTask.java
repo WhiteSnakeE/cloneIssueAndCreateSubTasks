@@ -7,7 +7,7 @@ import org.example.ProcessEnv;
 import org.example.services.JiraServiceClone;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("CloneIssue")
 @Slf4j
 public class CloneIssueTask implements JavaDelegate {
 
@@ -19,7 +19,9 @@ public class CloneIssueTask implements JavaDelegate {
 
     @Override
     public void execute (DelegateExecution delegateExecution) {
+        ProcessEnv processEnv = new ProcessEnv(delegateExecution);
         String cloneKey =  jiraServiceClone.cloneIssue();
-        log.info("issue cloned! ", cloneKey);
+        processEnv.setCloneKey(cloneKey);
+        log.info("issue cloned! {} ", cloneKey);
     }
 }

@@ -42,7 +42,14 @@ public class JiraServiceClone {
     }
 
     private IssueInput createCloneIssue (Issue issue) {
-        return new IssueInputBuilder().setSummary(name + issue.getSummary()).setDescription(issue.getDescription()).setPriority(issue.getPriority()).setIssueType(issue.getIssueType()).setAffectedVersions(issue.getAffectedVersions()).setFixVersions(issue.getFixVersions()).setProject(issue.getProject()).setFieldValue(String.valueOf(IssueFieldId.ATTACHMENT_FIELD), this.toListOfComplexIssueInputFieldValueWithSingleKey(issue.getAttachments(), "attachment")).build();
+        return new IssueInputBuilder().setSummary(name + issue.getSummary())
+                .setDescription(issue.getDescription())
+                .setPriority(issue.getPriority())
+                .setIssueType(issue.getIssueType())
+                .setAffectedVersions(issue.getAffectedVersions())
+                .setFixVersions(issue.getFixVersions())
+                .setProject(issue.getProject())
+                .build();
     }
 
     private IssueInput updateNotNullIssueFields (Issue issue) {

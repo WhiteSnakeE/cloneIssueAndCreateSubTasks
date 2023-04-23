@@ -6,6 +6,8 @@ public class ProcessEnv {
     public static final String ISSUE_KEY = "issueKey";
 
     public static final String ARE_NEED_TASKS_PRESENT = "tasksArePresent";
+
+    public static final String CLONE_KEY = "cloneKey";
     private final VariableScope variableScope;
 
 
@@ -19,6 +21,11 @@ public class ProcessEnv {
 
     public void setIssueKey (String projectName) {
         variableScope.setVariable(ISSUE_KEY, projectName);
+    }
+
+
+    public void setCloneKey (String cloneKey) {
+        variableScope.setVariable(CLONE_KEY, cloneKey);
     }
 
     public void setAreNeedIssuesPresent(boolean areNeedIssueIsPresent) {

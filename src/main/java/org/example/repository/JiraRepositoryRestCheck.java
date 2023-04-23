@@ -19,7 +19,7 @@ public class JiraRepositoryRestCheck implements JiraRepositoryCheck {
 
     private final SearchRestClient searchRestClient;
 
-    private IssueInstance issueInstance;
+    private final IssueInstance issueInstance;
 
     public JiraRepositoryRestCheck (JiraRestClient jiraRestClient, IssueInstance issueInstance) {
         searchRestClient = jiraRestClient.getSearchClient();
