@@ -7,7 +7,6 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.example.ProcessEnv;
 import org.example.services.JiraServiceCheck;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class CollectTaskCasesTask implements JavaDelegate {
     public CollectTaskCasesTask (JiraServiceCheck jiraServiceCheck) {
         this.jiraServiceCheck = jiraServiceCheck;
     }
-
 
     @Override
     public void execute (DelegateExecution delegateExecution){
