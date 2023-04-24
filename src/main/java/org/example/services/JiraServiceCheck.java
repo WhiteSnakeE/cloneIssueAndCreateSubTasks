@@ -2,11 +2,15 @@ package org.example.services;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
+import com.atlassian.jira.rest.client.api.domain.IssueLinkType;
 import org.example.repository.JiraRepositoryCheck;
 import org.example.repository.JiraRepositoryIssue;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -38,5 +42,15 @@ public class JiraServiceCheck {
             }
         }
         return false;
+    }
+
+    public List<IssueLink> collectIssueLinks(){
+        Iterator<IssueLink> linkIterator = jiraRepositoryCheck.getIssueLinks().iterator();
+        List<IssueLink> issueLinkList  = new ArrayList<>();
+        while (linkIterator.hasNext()){
+            IssueLink issueLink = linkIterator.next();
+                issueLinkList.add(issueLink);
+        }
+        return issueLinkList;
     }
 }

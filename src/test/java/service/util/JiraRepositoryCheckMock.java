@@ -26,7 +26,10 @@ public class JiraRepositoryCheckMock implements JiraRepositoryCheck {
 
     }
 
-
+    @Override
+    public Iterable<IssueLink> getIssueLinks () {
+        return null;
+    }
 
 
 }

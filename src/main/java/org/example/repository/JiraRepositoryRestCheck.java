@@ -4,6 +4,7 @@ import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.RestClientException;
 import com.atlassian.jira.rest.client.api.SearchRestClient;
 import com.atlassian.jira.rest.client.api.domain.Issue;
+import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import lombok.extern.slf4j.Slf4j;
 import org.example.exeptions.IssueNotExistException;
@@ -37,5 +38,10 @@ public class JiraRepositoryRestCheck implements JiraRepositoryCheck {
 
             throw new IssueNotExistException(e);
         }
+    }
+
+    @Override
+    public Iterable<IssueLink> getIssueLinks () {
+        return issueInstance.getIssue().getIssueLinks();
     }
 }
