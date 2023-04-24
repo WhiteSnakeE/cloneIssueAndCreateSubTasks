@@ -11,7 +11,6 @@ import org.example.repository.JiraRepositorySubTask;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Service
 public class JiraServiceSubTaskCreator {
@@ -35,5 +34,7 @@ public class JiraServiceSubTaskCreator {
                 return jiraRepositorySubTask.createSubTask(subtask);
 
     }
+
+
 
 }

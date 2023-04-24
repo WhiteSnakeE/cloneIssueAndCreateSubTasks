@@ -3,11 +3,11 @@ package org.example.repository;
 import com.atlassian.jira.rest.client.api.IssueRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.domain.BasicIssue;
-import com.atlassian.jira.rest.client.api.domain.Issue;
+import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
-import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import com.atlassian.jira.rest.client.api.domain.input.LinkIssuesInput;
 import lombok.extern.slf4j.Slf4j;
+import org.example.model.IssueInstance;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -19,8 +19,11 @@ public class JiraRepositoryRestUpdate implements JiraRepositoryUpdate {
 
     private final JiraRestClient jiraRestClient;
 
-    public JiraRepositoryRestUpdate (JiraRestClient jiraRestClient) {
+    private final IssueInstance instance;
+
+    public JiraRepositoryRestUpdate (JiraRestClient jiraRestClient, IssueInstance instance) {
         this.jiraRestClient = jiraRestClient;
+        this.instance = instance;
     }
 
     @Override
@@ -39,6 +42,12 @@ public class JiraRepositoryRestUpdate implements JiraRepositoryUpdate {
     @Override
     public void linkIssue (String keyFrom, String keyTo) {
         LinkIssuesInput linkIssuesInput = new LinkIssuesInput(keyFrom, keyTo, "Cloners");
+        jiraRestClient.getIssueClient().linkIssue(linkIssuesInput).claim();
+    }
+
+    @Override
+    public void setSubtaskLinkToCLone (IssueLink issueLink) {
+        LinkIssuesInput linkIssuesInput = new LinkIssuesInput(issueLink.getTargetIssueKey(),instance.getCloneKey(),"Relates");
         jiraRestClient.getIssueClient().linkIssue(linkIssuesInput).claim();
     }
 }

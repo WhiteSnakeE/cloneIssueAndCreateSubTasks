@@ -3,6 +3,7 @@ package org.example.services;
 import com.atlassian.jira.rest.client.api.domain.BasicIssue;
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueFieldId;
+import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
@@ -29,6 +30,10 @@ public class JiraServiceClone {
             JiraRepositoryUpdate jiraRepositoryUpdate) {
         this.jiraRepositoryIssue = jiraRepositoryIssue;
         this.jiraRepositoryUpdate = jiraRepositoryUpdate;
+    }
+
+    public void setSubtaskLinkToClone(IssueLink issueLink){
+        jiraRepositoryUpdate.setSubtaskLinkToCLone(issueLink);
     }
 
     public String cloneIssue () {

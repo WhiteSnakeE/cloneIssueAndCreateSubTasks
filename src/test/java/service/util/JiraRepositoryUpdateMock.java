@@ -1,9 +1,6 @@
 package service.util;
 
-import com.atlassian.jira.rest.client.api.domain.BasicIssue;
-import com.atlassian.jira.rest.client.api.domain.BasicPriority;
-import com.atlassian.jira.rest.client.api.domain.BasicProject;
-import com.atlassian.jira.rest.client.api.domain.Issue;
+import com.atlassian.jira.rest.client.api.domain.*;
 import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
@@ -41,6 +38,11 @@ public class JiraRepositoryUpdateMock implements JiraRepositoryUpdate {
 
     @Override
     public void linkIssue (String keyFrom, String keyTo) {
+
+    }
+
+    @Override
+    public void setSubtaskLinkToCLone (IssueLink issueLink) {
 
     }
 }
