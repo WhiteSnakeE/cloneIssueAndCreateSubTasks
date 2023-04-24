@@ -13,7 +13,7 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_1vivysp" messageRef="Message_2rt1qom" />
     </bpmn:startEvent>
     <bpmn:endEvent id="ProcessEndedEndEvent" name="Process Ended" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_03v7c3z</bpmn:incoming>
+      <bpmn:incoming>Flow_1olp158</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_17r1onl" sourceRef="FindIssueByProjectKeyTask" targetRef="CheckTaskCasesInIssueTask" />
     <bpmn:sequenceFlow id="Flow_0wpirkm" sourceRef="ProcessStartedStartMessageEvent" targetRef="FindIssueByProjectKeyTask" />
@@ -34,10 +34,38 @@
       <bpmn:incoming>Flow_1n66vut</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1n66vut" name="No" sourceRef="TasksArePresentGateway" targetRef="TasksAreAbsentEndEvent" />
-    <bpmn:sequenceFlow id="Flow_03v7c3z" sourceRef="CloneIssueTask" targetRef="ProcessEndedEndEvent" />
+    <bpmn:sequenceFlow id="Flow_03v7c3z" sourceRef="CloneIssueTask" targetRef="CollectTaskCasesTask" />
     <bpmn:serviceTask id="CloneIssueTask" name="clone issue" camunda:asyncBefore="true" camunda:delegateExpression="${CloneIssue}">
       <bpmn:incoming>Flow_0ch2zdb</bpmn:incoming>
       <bpmn:outgoing>Flow_03v7c3z</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:subProcess id="Activity_0joqqpr">
+      <bpmn:incoming>Flow_08ztelq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1olp158</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
+      <bpmn:startEvent id="Event_159f2mp" name="test cases collected">
+        <bpmn:outgoing>Flow_14io8wc</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:serviceTask id="Activity_08niw5n" name="create subtask under task case">
+        <bpmn:incoming>Flow_14io8wc</bpmn:incoming>
+        <bpmn:outgoing>Flow_1wr8pgi</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_14io8wc" sourceRef="Event_159f2mp" targetRef="Activity_08niw5n" />
+      <bpmn:serviceTask id="Activity_0iovgpt" name="relates subtask to clone issue">
+        <bpmn:incoming>Flow_1wr8pgi</bpmn:incoming>
+        <bpmn:outgoing>Flow_0xfmd35</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1wr8pgi" sourceRef="Activity_08niw5n" targetRef="Activity_0iovgpt" />
+      <bpmn:endEvent id="Event_1k7iro2">
+        <bpmn:incoming>Flow_0xfmd35</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_0xfmd35" sourceRef="Activity_0iovgpt" targetRef="Event_1k7iro2" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_1olp158" sourceRef="Activity_0joqqpr" targetRef="ProcessEndedEndEvent" />
+    <bpmn:sequenceFlow id="Flow_08ztelq" sourceRef="CollectTaskCasesTask" targetRef="Activity_0joqqpr" />
+    <bpmn:serviceTask id="CollectTaskCasesTask" name="collect task cases" camunda:asyncBefore="true" camunda:delegateExpression="${CollectTaskCases}">
+      <bpmn:incoming>Flow_03v7c3z</bpmn:incoming>
+      <bpmn:outgoing>Flow_08ztelq</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_2rt1qom" name="IssueKey" />
@@ -45,69 +73,111 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="cloneIssueAndCreateSubTasks">
       <bpmndi:BPMNShape id="Activity_18ysom2_di" bpmnElement="FindIssueByProjectKeyTask">
-        <dc:Bounds x="330" y="80" width="100" height="80" />
+        <dc:Bounds x="330" y="140" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0e7vt2w_di" bpmnElement="ProcessStartedStartMessageEvent">
-        <dc:Bounds x="182" y="102" width="36" height="36" />
+        <dc:Bounds x="182" y="162" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="163" y="145" width="79" height="14" />
+          <dc:Bounds x="163" y="205" width="79" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0hjgrv4_di" bpmnElement="CheckTaskCasesInIssueTask">
-        <dc:Bounds x="500" y="80" width="100" height="80" />
+        <dc:Bounds x="500" y="140" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1pfnhzh_di" bpmnElement="TasksArePresentGateway" isMarkerVisible="true">
-        <dc:Bounds x="665" y="95" width="50" height="50" />
+        <dc:Bounds x="665" y="155" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="645" y="71" width="90" height="14" />
+          <dc:Bounds x="645" y="131" width="90" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0enhf1p_di" bpmnElement="TasksAreAbsentEndEvent">
-        <dc:Bounds x="862" y="212" width="36" height="36" />
+        <dc:Bounds x="672" y="272" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="839" y="255" width="85" height="14" />
+          <dc:Bounds x="649" y="315" width="85" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_14zwzin_di" bpmnElement="CloneIssueTask">
-        <dc:Bounds x="870" y="80" width="100" height="80" />
+        <dc:Bounds x="780" y="140" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_05u68r3_di" bpmnElement="ProcessEndedEndEvent">
-        <dc:Bounds x="1412" y="102" width="36" height="36" />
+        <dc:Bounds x="1742" y="162" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1394" y="145" width="75" height="14" />
+          <dc:Bounds x="1724" y="205" width="75" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bxbajc_di" bpmnElement="CollectTaskCasesTask">
+        <dc:Bounds x="940" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0joqqpr_di" bpmnElement="Activity_0joqqpr" isExpanded="true">
+        <dc:Bounds x="1110" y="80" width="570" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_159f2mp_di" bpmnElement="Event_159f2mp">
+        <dc:Bounds x="1150" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1144" y="205" width="49" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1641ewd_di" bpmnElement="Activity_08niw5n">
+        <dc:Bounds x="1270" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ho2x74_di" bpmnElement="Activity_0iovgpt">
+        <dc:Bounds x="1420" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1k7iro2_di" bpmnElement="Event_1k7iro2">
+        <dc:Bounds x="1572" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_14io8wc_di" bpmnElement="Flow_14io8wc">
+        <di:waypoint x="1186" y="180" />
+        <di:waypoint x="1270" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xfmd35_di" bpmnElement="Flow_0xfmd35">
+        <di:waypoint x="1520" y="180" />
+        <di:waypoint x="1572" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wr8pgi_di" bpmnElement="Flow_1wr8pgi">
+        <di:waypoint x="1370" y="180" />
+        <di:waypoint x="1420" y="180" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_17r1onl_di" bpmnElement="Flow_17r1onl">
-        <di:waypoint x="430" y="120" />
-        <di:waypoint x="500" y="120" />
+        <di:waypoint x="430" y="180" />
+        <di:waypoint x="500" y="180" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0wpirkm_di" bpmnElement="Flow_0wpirkm">
-        <di:waypoint x="218" y="120" />
-        <di:waypoint x="330" y="120" />
+        <di:waypoint x="218" y="180" />
+        <di:waypoint x="330" y="180" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1im97gs_di" bpmnElement="Flow_1im97gs">
-        <di:waypoint x="600" y="120" />
-        <di:waypoint x="665" y="120" />
+        <di:waypoint x="600" y="180" />
+        <di:waypoint x="665" y="180" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ch2zdb_di" bpmnElement="Flow_0ch2zdb">
-        <di:waypoint x="715" y="120" />
-        <di:waypoint x="870" y="120" />
+        <di:waypoint x="715" y="180" />
+        <di:waypoint x="780" y="180" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="748" y="102" width="18" height="14" />
+          <dc:Bounds x="724" y="162" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1n66vut_di" bpmnElement="Flow_1n66vut">
-        <di:waypoint x="690" y="145" />
-        <di:waypoint x="690" y="230" />
-        <di:waypoint x="862" y="230" />
+        <di:waypoint x="690" y="205" />
+        <di:waypoint x="690" y="272" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="698" y="185" width="15" height="14" />
+          <dc:Bounds x="698" y="235" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_03v7c3z_di" bpmnElement="Flow_03v7c3z">
-        <di:waypoint x="970" y="120" />
-        <di:waypoint x="1412" y="120" />
+        <di:waypoint x="880" y="180" />
+        <di:waypoint x="940" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1olp158_di" bpmnElement="Flow_1olp158">
+        <di:waypoint x="1680" y="180" />
+        <di:waypoint x="1742" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08ztelq_di" bpmnElement="Flow_08ztelq">
+        <di:waypoint x="1040" y="180" />
+        <di:waypoint x="1110" y="180" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

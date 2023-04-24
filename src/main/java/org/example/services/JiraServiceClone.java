@@ -33,26 +33,20 @@ public class JiraServiceClone {
 
     public String cloneIssue () {
         Issue issue = jiraRepositoryIssue.getIssue();
-        BasicIssue basicIssue = jiraRepositoryUpdate.clone(createCloneIssue(issue));
+        BasicIssue basicIssue = createCloneIssue(issue);
         jiraRepositoryUpdate.updateClone(basicIssue.getKey(), updateNotNullIssueFields(issue));
         jiraRepositoryUpdate.linkIssue(jiraRepositoryIssue.getIssue().getKey(), basicIssue.getKey());
         jiraRepositoryIssue.setCloneKey(basicIssue.getKey());
         return basicIssue.getKey();
+    }
+
+    public BasicIssue createCloneIssue (Issue issue) {
+        IssueInput issueInput = new IssueInputBuilder().setSummary(name + issue.getSummary()).setDescription(issue.getDescription()).setPriority(issue.getPriority()).setIssueType(issue.getIssueType()).setAffectedVersions(issue.getAffectedVersions()).setFixVersions(issue.getFixVersions()).setProject(issue.getProject()).build();
+        return jiraRepositoryUpdate.clone(issueInput);
 
     }
 
-    private IssueInput createCloneIssue (Issue issue) {
-        return new IssueInputBuilder().setSummary(name + issue.getSummary())
-                .setDescription(issue.getDescription())
-                .setPriority(issue.getPriority())
-                .setIssueType(issue.getIssueType())
-                .setAffectedVersions(issue.getAffectedVersions())
-                .setFixVersions(issue.getFixVersions())
-                .setProject(issue.getProject())
-                .build();
-    }
-
-    private IssueInput updateNotNullIssueFields (Issue issue) {
+    public IssueInput updateNotNullIssueFields (Issue issue) {
         IssueInputBuilder builder = new IssueInputBuilder();
         Optional.ofNullable(issue.getAssignee()).ifPresent(builder::setAssignee);
         Optional.ofNullable(issue.getAttachments()).ifPresent(attachments -> builder.setFieldValue(String.valueOf(IssueFieldId.ATTACHMENT_FIELD), this.toListOfComplexIssueInputFieldValueWithSingleKey(attachments, "attachment")));
