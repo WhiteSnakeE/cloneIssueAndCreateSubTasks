@@ -2,6 +2,7 @@ package org.example;
 
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import org.camunda.bpm.engine.delegate.VariableScope;
+import org.example.model.IssueLinkModel;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class ProcessEnv {
     public static final String ARE_NEED_TASKS_PRESENT = "tasksArePresent";
 
     public static final String JIRA_TASK_CASES = "taskCases";
-    public static final String TASK_CASE = "tasCase";
+    public static final String TASK_CASE = "taskCase";
 
     public static final String CLONE_KEY = "cloneKey";
     private final VariableScope variableScope;
@@ -42,15 +43,17 @@ public class ProcessEnv {
         return (boolean) variableScope.getVariable(ARE_NEED_TASKS_PRESENT);
     }
 
-    public void setTaskCase (IssueLink issueLink) {
+    public void setTaskCase (IssueLinkModel issueLink) {
         variableScope.setVariable(TASK_CASE, issueLink);
     }
 
-    public IssueLink getTaskCase () {
-        return (IssueLink) variableScope.getVariable(TASK_CASE);
+    public IssueLinkModel getTaskCase () {
+        return (IssueLinkModel) variableScope.getVariable(TASK_CASE);
     }
-
-    public void setTaskCases (List<IssueLink> taskCases) {
+    public List<IssueLinkModel> getTaskCases () {
+        return (List<IssueLinkModel>) variableScope.getVariable(JIRA_TASK_CASES);
+    }
+    public void setTaskCases (List<IssueLinkModel> taskCases) {
         variableScope.setVariable(JIRA_TASK_CASES, taskCases);
     }
 }

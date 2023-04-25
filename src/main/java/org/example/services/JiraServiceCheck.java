@@ -3,6 +3,7 @@ package org.example.services;
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import com.atlassian.jira.rest.client.api.domain.IssueLinkType;
+import org.example.model.IssueLinkModel;
 import org.example.repository.JiraRepositoryCheck;
 import org.example.repository.JiraRepositoryIssue;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,13 +45,29 @@ public class JiraServiceCheck {
         return false;
     }
 
-    public List<IssueLink> collectIssueLinks(){
+    public List<IssueLink> collectIssueLinks () {
         Iterator<IssueLink> linkIterator = jiraRepositoryCheck.getIssueLinks().iterator();
-        List<IssueLink> issueLinkList  = new ArrayList<>();
-        while (linkIterator.hasNext()){
+        List<IssueLink> issueLinkList = new ArrayList<>();
+        while (linkIterator.hasNext()) {
             IssueLink issueLink = linkIterator.next();
+            if(!issueLink.getIssueLinkType().getName().equals("Cloners")){
                 issueLinkList.add(issueLink);
+            }
         }
         return issueLinkList;
+    }
+
+    public List<IssueLinkModel> convertIssueLinks (List<IssueLink> issueLinkList) {
+        List<IssueLinkModel> issueLinkModels = new ArrayList<>();
+        for (IssueLink issueLink : issueLinkList) {
+            issueLinkModels.add(IssueLinkModel.builder()
+                    .name(issueLink.getIssueLinkType().getName())
+                    .description(issueLink.getIssueLinkType().getDescription())
+                    .targetIssueKey(issueLink.getTargetIssueKey())
+                    .targetIssueUri(issueLink.getTargetIssueUri())
+                            .direction(issueLink.getIssueLinkType().getDirection())
+                    .build());
+        }
+        return issueLinkModels;
     }
 }

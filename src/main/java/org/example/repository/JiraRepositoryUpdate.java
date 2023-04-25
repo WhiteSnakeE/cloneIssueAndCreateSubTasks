@@ -11,6 +11,6 @@ public interface JiraRepositoryUpdate {
 
     void linkIssue(String keyFrom,String keyTo);
 
-    void setSubtaskLinkToCLone(IssueLink issueLink);
+    void setSubtaskLinkToCLone(String s);
 
 }

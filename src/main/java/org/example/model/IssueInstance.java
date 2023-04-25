@@ -9,6 +9,16 @@ public class IssueInstance {
 
     private String cloneKey;
 
+    private String subtaskKey;
+
+    public String getSubtaskKey () {
+        return subtaskKey;
+    }
+
+    public void setSubtaskKey (String subtaskKey) {
+        this.subtaskKey = subtaskKey;
+    }
+
     public void setIssue(Issue issue){
         this.issue = issue;
     }

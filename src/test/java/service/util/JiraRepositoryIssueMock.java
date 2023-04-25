@@ -33,6 +33,16 @@ public class JiraRepositoryIssueMock implements JiraRepositoryIssue {
 
     }
 
+    @Override
+    public String getSubtaskKey () {
+        return null;
+    }
+
+    @Override
+    public void setSubtaskKey (String subtaskKey) {
+
+    }
+
     public void test(){
 
     }

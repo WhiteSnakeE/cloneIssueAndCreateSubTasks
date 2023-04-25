@@ -10,5 +10,9 @@ public interface JiraRepositoryIssue {
 
     void setCloneKey(String cloneKey);
 
+    String getSubtaskKey();
+
+    void setSubtaskKey(String subtaskKey);
+
 
 }

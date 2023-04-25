@@ -1,9 +1,11 @@
 package org.example.task;
 
+import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.example.ProcessEnv;
+
 import org.example.services.JiraServiceSubTaskCreator;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ public class CreateSubTaskUnderTaskCaseTask implements JavaDelegate {
 
     private final JiraServiceSubTaskCreator jiraServiceSubTaskCreator;
 
+
     public CreateSubTaskUnderTaskCaseTask (JiraServiceSubTaskCreator jiraServiceSubTaskCreator) {
         this.jiraServiceSubTaskCreator = jiraServiceSubTaskCreator;
     }
@@ -20,7 +23,9 @@ public class CreateSubTaskUnderTaskCaseTask implements JavaDelegate {
     @Override
     public void execute (DelegateExecution delegateExecution) {
         ProcessEnv processEnv = new ProcessEnv(delegateExecution);
-        String key = jiraServiceSubTaskCreator.createSubTask(processEnv.getTaskCase());
+        IssueLink issueLink =  jiraServiceSubTaskCreator.convertIssueLink(processEnv.getTaskCase());
+        String key = jiraServiceSubTaskCreator.createSubTask(issueLink);
+
         log.info("subtask key is {}",key);
     }
 }

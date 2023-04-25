@@ -45,9 +45,11 @@ public class JiraRepositoryRestUpdate implements JiraRepositoryUpdate {
         jiraRestClient.getIssueClient().linkIssue(linkIssuesInput).claim();
     }
 
+
+
     @Override
-    public void setSubtaskLinkToCLone (IssueLink issueLink) {
-        LinkIssuesInput linkIssuesInput = new LinkIssuesInput(issueLink.getTargetIssueKey(),instance.getCloneKey(),"Relates");
+    public void setSubtaskLinkToCLone (String s) {
+        LinkIssuesInput linkIssuesInput = new LinkIssuesInput(s, instance.getCloneKey(),"Relates");
         jiraRestClient.getIssueClient().linkIssue(linkIssuesInput).claim();
     }
 }

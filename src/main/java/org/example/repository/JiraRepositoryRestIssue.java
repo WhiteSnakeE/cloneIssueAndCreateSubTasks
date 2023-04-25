@@ -30,4 +30,14 @@ public class JiraRepositoryRestIssue implements JiraRepositoryIssue {
     public void setCloneKey (String cloneKey) {
         issueInstance.setCloneKey(cloneKey);
     }
+
+    @Override
+    public String getSubtaskKey () {
+        return issueInstance.getSubtaskKey();
+    }
+
+    @Override
+    public void setSubtaskKey (String subtaskKey) {
+            issueInstance.setSubtaskKey(subtaskKey);
+    }
 }

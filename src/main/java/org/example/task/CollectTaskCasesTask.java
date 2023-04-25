@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.example.ProcessEnv;
+import org.example.model.IssueLinkModel;
 import org.example.services.JiraServiceCheck;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +23,10 @@ public class CollectTaskCasesTask implements JavaDelegate {
 
     @Override
     public void execute (DelegateExecution delegateExecution){
-        List<IssueLink> issueLinkList= jiraServiceCheck.collectIssueLinks();
+        List<IssueLink> issueLinkList = jiraServiceCheck.collectIssueLinks();
+        List<IssueLinkModel> issueLinkModels = jiraServiceCheck.convertIssueLinks(issueLinkList);
         ProcessEnv processEnv = new ProcessEnv(delegateExecution);
-        processEnv.setTaskCases(issueLinkList);
+        processEnv.setTaskCases(issueLinkModels);
         log.info("task cases were collected");
 
     }

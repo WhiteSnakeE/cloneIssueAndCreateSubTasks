@@ -42,7 +42,8 @@ public class JiraRepositoryUpdateMock implements JiraRepositoryUpdate {
     }
 
     @Override
-    public void setSubtaskLinkToCLone (IssueLink issueLink) {
+    public void setSubtaskLinkToCLone (String s) {
 
     }
+
 }
