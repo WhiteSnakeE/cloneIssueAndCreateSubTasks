@@ -26,6 +26,7 @@ public class CreateSubTaskUnderTaskCaseTask implements JavaDelegate {
         ProcessEnv processEnv = new ProcessEnv(delegateExecution);
         IssueLink issueLink = new IssueLinkConverter().convertToIssueLink(processEnv.getTaskCase());
         String key = jiraServiceSubTaskCreator.createSubTask(issueLink);
+        processEnv.setSubtaskKey(key);
         log.info("subtask key is {}",key);
     }
 }

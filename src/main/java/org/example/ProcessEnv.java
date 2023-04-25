@@ -15,6 +15,8 @@ public class ProcessEnv {
     public static final String TASK_CASE = "taskCase";
 
     public static final String CLONE_KEY = "cloneKey";
+
+    public static final String SUBTASK_KEY = "subtaskKey";
     private final VariableScope variableScope;
 
 
@@ -26,8 +28,16 @@ public class ProcessEnv {
         return (String) variableScope.getVariable(ISSUE_KEY);
     }
 
+    public String getSubtaskKey () {
+        return (String) variableScope.getVariable(SUBTASK_KEY);
+    }
+
     public void setIssueKey (String projectName) {
         variableScope.setVariable(ISSUE_KEY, projectName);
+    }
+
+    public void setSubtaskKey (String subtaskKey) {
+        variableScope.setVariable(SUBTASK_KEY, subtaskKey);
     }
 
 
