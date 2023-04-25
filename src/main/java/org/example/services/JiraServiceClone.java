@@ -32,9 +32,9 @@ public class JiraServiceClone {
         this.jiraRepositoryUpdate = jiraRepositoryUpdate;
     }
 
-    public void setSubtaskLinkToClone(IssueLink issueLink){
+    public String setSubtaskLinkToClone(IssueLink issueLink){
         jiraRepositoryUpdate.setLinkToIssue(issueLink.getTargetIssueKey(),jiraRepositoryIssue.getCloneKey(),LinkTypeEnum.RELATES.linkType);
-        jiraRepositoryUpdate.setLinkToIssue(jiraRepositoryIssue.getSubtaskKey(), jiraRepositoryIssue.getCloneKey(), LinkTypeEnum.RELATES.linkType);
+        return jiraRepositoryUpdate.setLinkToIssue(jiraRepositoryIssue.getSubtaskKey(), jiraRepositoryIssue.getCloneKey(), LinkTypeEnum.RELATES.linkType);
     }
 
     public String cloneIssue () {

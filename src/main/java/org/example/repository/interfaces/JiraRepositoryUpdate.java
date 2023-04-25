@@ -8,6 +8,6 @@ public interface JiraRepositoryUpdate {
 
     void updateClone(String key, IssueInput issueInputBuilder);
 
-    void setLinkToIssue(String keyFrom,String keyTo,String linkType);
+    String setLinkToIssue(String keyFrom,String keyTo,String linkType);
 
 }

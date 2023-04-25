@@ -44,13 +44,14 @@ public class JiraRepositoryUpdateImpl implements JiraRepositoryUpdate {
     }
 
     @Override
-    public void setLinkToIssue (String keyFrom, String keyTo, String linkType) {
+    public String setLinkToIssue (String keyFrom, String keyTo, String linkType) {
         LinkIssuesInput linkIssuesInput = new LinkIssuesInput(keyFrom, keyTo, linkType);
         try {
             jiraRestClient.getIssueClient().linkIssue(linkIssuesInput).get(2,TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new RuntimeException(e);
         }
+        return keyFrom;
     }
 
 }
