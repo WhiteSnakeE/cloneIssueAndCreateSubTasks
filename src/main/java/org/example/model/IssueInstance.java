@@ -1,7 +1,10 @@
 package org.example.model;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
+import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class IssueInstance {
@@ -10,6 +13,8 @@ public class IssueInstance {
     private String cloneKey;
 
     private String subtaskKey;
+
+    private List<IssueLink> issueLinkList;
 
     public String getSubtaskKey () {
         return subtaskKey;
@@ -33,5 +38,13 @@ public class IssueInstance {
 
     public void setCloneKey (String cloneKey) {
         this.cloneKey = cloneKey;
+    }
+
+    public List<IssueLink> getIssueLinkList () {
+        return issueLinkList;
+    }
+
+    public void setIssueLinkList (List<IssueLink> issueLinkList) {
+        this.issueLinkList = issueLinkList;
     }
 }

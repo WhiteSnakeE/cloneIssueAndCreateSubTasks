@@ -1,7 +1,7 @@
 package service.util;
 
 import com.atlassian.jira.rest.client.api.domain.*;
-import org.example.repository.JiraRepositoryIssue;
+import org.example.repository.interfaces.JiraRepositoryIssue;
 
 import java.net.URI;
 import java.util.*;
@@ -43,7 +43,13 @@ public class JiraRepositoryIssueMock implements JiraRepositoryIssue {
 
     }
 
-    public void test(){
+    @Override
+    public List<IssueLink> getIssueLinks () {
+        return null;
+    }
+
+    @Override
+    public void setIssueLinks (List<IssueLink> issueLinks) {
 
     }
 }

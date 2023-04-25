@@ -2,9 +2,8 @@ package service.util;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
-import com.atlassian.jira.rest.client.api.domain.IssueLinkType;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
-import org.example.repository.JiraRepositoryCheck;
+import org.example.repository.interfaces.JiraRepositoryCheck;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -24,11 +23,6 @@ public class JiraRepositoryCheckMock implements JiraRepositoryCheck {
         issueList.add(needIssue);
         return new SearchResult(0, 1, 1, issueList);
 
-    }
-
-    @Override
-    public Iterable<IssueLink> getIssueLinks () {
-        return null;
     }
 
 

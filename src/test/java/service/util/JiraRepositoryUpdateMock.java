@@ -3,12 +3,10 @@ package service.util;
 import com.atlassian.jira.rest.client.api.domain.*;
 import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
-import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
-import org.example.repository.JiraRepositoryUpdate;
+import org.example.repository.interfaces.JiraRepositoryUpdate;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 
 public class JiraRepositoryUpdateMock implements JiraRepositoryUpdate {
 
@@ -37,13 +35,9 @@ public class JiraRepositoryUpdateMock implements JiraRepositoryUpdate {
     }
 
     @Override
-    public void linkIssue (String keyFrom, String keyTo) {
+    public void setLinkToIssue (String keyFrom, String keyTo, String linkType) {
 
     }
 
-    @Override
-    public void setSubtaskLinkToCLone (String s) {
-
-    }
 
 }

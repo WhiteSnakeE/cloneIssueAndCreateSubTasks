@@ -2,49 +2,38 @@ package org.example.services;
 
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import com.atlassian.jira.rest.client.api.domain.IssueLinkType;
-import com.atlassian.jira.rest.client.api.domain.IssueType;
-import com.atlassian.jira.rest.client.api.domain.Subtask;
 import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import org.example.model.IssueLinkModel;
-import org.example.repository.JiraRepositoryIssue;
-import org.example.repository.JiraRepositorySubTask;
+import org.example.repository.interfaces.JiraRepositoryIssue;
+import org.example.repository.interfaces.JiraRepositorySubtaskCreator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class JiraServiceSubTaskCreator {
-    private final JiraRepositorySubTask jiraRepositorySubTask;
+    private final JiraRepositorySubtaskCreator jiraRepositorySubtaskCreator;
 
     private final JiraRepositoryIssue jiraRepositoryIssue;
 
-    public JiraServiceSubTaskCreator (JiraRepositorySubTask jiraRepositorySubTask,
+    public JiraServiceSubTaskCreator (JiraRepositorySubtaskCreator jiraRepositorySubtaskCreator,
             JiraRepositoryIssue jiraRepositoryIssue) {
-        this.jiraRepositorySubTask = jiraRepositorySubTask;
+        this.jiraRepositorySubtaskCreator = jiraRepositorySubtaskCreator;
         this.jiraRepositoryIssue = jiraRepositoryIssue;
     }
 
     public String createSubTask (IssueLink issueLink) {
         IssueInput subtask = new IssueInputBuilder()
                 .setProjectKey(jiraRepositoryIssue.getIssue().getProject().getKey())
-                .setSummary("Test Run  " + LocalDate.now().getDayOfMonth() + "." + LocalDate.now().getMonthValue())
+                .setSummary("Test Run  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM")))
                 .setIssueTypeId(10003L)
                 .setFieldValue("parent", ComplexIssueInputFieldValue.with("key", issueLink.getTargetIssueKey()))
                 .build();
-        return jiraRepositorySubTask.createSubTask(subtask);
+        return jiraRepositorySubtaskCreator.createSubTask(subtask);
 
     }
-
-    public IssueLink convertIssueLink (IssueLinkModel issueLinkModel) {
-        IssueLinkType issueLinkType = new IssueLinkType(issueLinkModel.getName(), issueLinkModel.getDescription(), issueLinkModel.getDirection());
-        return new IssueLink(issueLinkModel.getTargetIssueKey(), issueLinkModel.getTargetIssueUri(), issueLinkType);
-
-
-    }
-
 
 }

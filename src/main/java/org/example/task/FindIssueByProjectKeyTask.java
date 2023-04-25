@@ -23,6 +23,6 @@ public class FindIssueByProjectKeyTask implements JavaDelegate {
         String response = (String) delegateExecution.getVariable("IssueKey");
         String issueKey = jiraServiceCheck.checkIfIssueExist(response);
         processEnv.setIssueKey(issueKey);
-        System.out.println(issueKey);
+        log.info("project key is {}", issueKey);
     }
 }

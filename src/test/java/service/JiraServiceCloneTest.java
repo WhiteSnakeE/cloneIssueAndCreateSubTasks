@@ -12,8 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import service.util.JiraRepositoryIssueMock;
 import service.util.JiraRepositoryUpdateMock;
 
-import java.util.Base64;
-
 @ExtendWith(MockitoExtension.class)
 public class JiraServiceCloneTest {
 
@@ -36,7 +34,7 @@ public class JiraServiceCloneTest {
     }
     @Test
     public void updateNotNullIssueFields(){
-        IssueInput issueInput = jiraServiceClone.updateNotNullIssueFields(jiraRepositoryIssueMock.getIssue());
+        IssueInput issueInput = jiraServiceClone.updateAssigneeAndAttachment(jiraRepositoryIssueMock.getIssue());
         ComplexIssueInputFieldValue complexIssueInputFieldValue = (ComplexIssueInputFieldValue) issueInput.getField("assignee").getValue();
         String name = complexIssueInputFieldValue.getValuesMap().get("name").toString();
         Assertions.assertEquals(name,jiraRepositoryIssueMock.getIssue().getAssignee().getName());
