@@ -19,13 +19,8 @@ public class ProcessEnv {
     public static final String SUBTASK_KEY = "subtaskKey";
     private final VariableScope variableScope;
 
-
     public ProcessEnv (VariableScope variableScope) {
         this.variableScope = variableScope;
-    }
-
-    public String getIssueKey () {
-        return (String) variableScope.getVariable(ISSUE_KEY);
     }
 
     public String getSubtaskKey () {
@@ -45,6 +40,10 @@ public class ProcessEnv {
         variableScope.setVariable(CLONE_KEY, cloneKey);
     }
 
+    public String getCloneKey () {
+        return (String) variableScope.getVariable(CLONE_KEY);
+    }
+
     public void setAreNeedIssuesPresent (boolean areNeedIssueIsPresent) {
         variableScope.setVariable(ARE_NEED_TASKS_PRESENT, areNeedIssueIsPresent);
     }
@@ -53,16 +52,10 @@ public class ProcessEnv {
         return (boolean) variableScope.getVariable(ARE_NEED_TASKS_PRESENT);
     }
 
-    public void setTaskCase (IssueLinkModel issueLink) {
-        variableScope.setVariable(TASK_CASE, issueLink);
-    }
-
     public IssueLinkModel getTaskCase () {
         return (IssueLinkModel) variableScope.getVariable(TASK_CASE);
     }
-    public List<IssueLinkModel> getTaskCases () {
-        return (List<IssueLinkModel>) variableScope.getVariable(JIRA_TASK_CASES);
-    }
+
     public void setTaskCases (List<IssueLinkModel> taskCases) {
         variableScope.setVariable(JIRA_TASK_CASES, taskCases);
     }

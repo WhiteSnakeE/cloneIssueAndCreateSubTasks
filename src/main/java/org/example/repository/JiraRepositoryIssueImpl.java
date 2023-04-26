@@ -25,25 +25,6 @@ public class JiraRepositoryIssueImpl implements JiraRepositoryIssue {
         return issueInstance.getIssue();
     }
 
-    @Override
-    public String getCloneKey () {
-        return issueInstance.getCloneKey();
-    }
-
-    @Override
-    public void setCloneKey (String cloneKey) {
-        issueInstance.setCloneKey(cloneKey);
-    }
-
-    @Override
-    public String getSubtaskKey () {
-        return issueInstance.getSubtaskKey();
-    }
-
-    @Override
-    public void setSubtaskKey (String subtaskKey) {
-            issueInstance.setSubtaskKey(subtaskKey);
-    }
 
     @Override
     public List<IssueLink> getIssueLinks () {

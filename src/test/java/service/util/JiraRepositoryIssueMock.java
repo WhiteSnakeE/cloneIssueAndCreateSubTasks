@@ -1,6 +1,7 @@
 package service.util;
 
 import com.atlassian.jira.rest.client.api.domain.*;
+import org.example.model.IssueInstance;
 import org.example.repository.interfaces.JiraRepositoryIssue;
 
 import java.net.URI;
@@ -24,27 +25,8 @@ public class JiraRepositoryIssueMock implements JiraRepositoryIssue {
     }
 
     @Override
-    public String getCloneKey () {
-        return null;
-    }
-
-    @Override
-    public void setCloneKey (String cloneKey) {
-
-    }
-
-    @Override
-    public String getSubtaskKey () {
-        return null;
-    }
-
-    @Override
-    public void setSubtaskKey (String subtaskKey) {
-
-    }
-
-    @Override
     public List<IssueLink> getIssueLinks () {
+
         IssueLinkType issueLinkType = new IssueLinkType("name","descriprion", IssueLinkType.Direction.OUTBOUND);
         IssueLink issueLink = new IssueLink("FIXBIT-1000", URI.create("someUri"),issueLinkType);
         return List.of(issueLink);

@@ -46,7 +46,7 @@ public class JiraServiceCloneTest {
     public void setSubtaskLinkToClone (){
         IssueLinkType issueLinkType = new IssueLinkType("Relates","relates to", IssueLinkType.Direction.OUTBOUND);
         IssueLink issueLink = new IssueLink("FIXBIT-18",null,issueLinkType);
-        String key = jiraServiceClone.setSubtaskLinkToClone(issueLink);
+        String key = jiraServiceClone.setSubtaskLinkToClone(issueLink,"FIXBIT-100","FIXBIT-18");
         Assertions.assertEquals("FIXBIT-18",key);
     }
 

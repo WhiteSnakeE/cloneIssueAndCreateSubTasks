@@ -14,11 +14,9 @@ import java.util.concurrent.TimeoutException;
 public class JiraRepositorySubtaskCreatorImpl implements JiraRepositorySubtaskCreator {
 
     private final JiraRestClient jiraRestClient;
-    private final IssueInstance instance;
 
-    public JiraRepositorySubtaskCreatorImpl (JiraRestClient jiraRestClient, IssueInstance instance) {
+    public JiraRepositorySubtaskCreatorImpl (JiraRestClient jiraRestClient) {
         this.jiraRestClient = jiraRestClient;
-        this.instance = instance;
     }
 
     @Override
@@ -29,7 +27,6 @@ public class JiraRepositorySubtaskCreatorImpl implements JiraRepositorySubtaskCr
         } catch (InterruptedException | TimeoutException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-        instance.setSubtaskKey(key);
         return key;
     }
 }

@@ -32,9 +32,9 @@ public class JiraServiceClone {
         this.jiraRepositoryUpdate = jiraRepositoryUpdate;
     }
 
-    public String setSubtaskLinkToClone(IssueLink issueLink){
-        jiraRepositoryUpdate.setLinkToIssue(issueLink.getTargetIssueKey(),jiraRepositoryIssue.getCloneKey(),LinkTypeEnum.RELATES.linkType);
-        return jiraRepositoryUpdate.setLinkToIssue(jiraRepositoryIssue.getSubtaskKey(), jiraRepositoryIssue.getCloneKey(), LinkTypeEnum.RELATES.linkType);
+    public String setSubtaskLinkToClone(IssueLink issueLink,String cloneKey,String subTaskKey){
+        jiraRepositoryUpdate.setLinkToIssue(issueLink.getTargetIssueKey(),cloneKey,LinkTypeEnum.RELATES.linkType);
+        return jiraRepositoryUpdate.setLinkToIssue(subTaskKey, cloneKey, LinkTypeEnum.RELATES.linkType);
     }
 
     public String cloneIssue () {
@@ -42,7 +42,6 @@ public class JiraServiceClone {
         BasicIssue basicIssue = createCloneIssue(issue);
         jiraRepositoryUpdate.updateClone(basicIssue.getKey(), updateAssigneeAndAttachment(issue));
         jiraRepositoryUpdate.setLinkToIssue(jiraRepositoryIssue.getIssue().getKey(), basicIssue.getKey(),LinkTypeEnum.CLONERS.linkType);
-        jiraRepositoryIssue.setCloneKey(basicIssue.getKey());
         return basicIssue.getKey();
     }
 

@@ -23,7 +23,7 @@ public class RelatesSubtaskToCloneIssueTask implements JavaDelegate {
     public void execute (DelegateExecution delegateExecution) {
         ProcessEnv processEnv = new ProcessEnv(delegateExecution);
         IssueLink issueLink = new IssueLinkConverter().convertToIssueLink(processEnv.getTaskCase());
-        String key = jiraServiceClone.setSubtaskLinkToClone(issueLink);
+        String key = jiraServiceClone.setSubtaskLinkToClone(issueLink, processEnv.getCloneKey(), processEnv.getSubtaskKey());
         processEnv.setSubtaskKey(key);
         log.info("subtask with key {} was related",key);
     }

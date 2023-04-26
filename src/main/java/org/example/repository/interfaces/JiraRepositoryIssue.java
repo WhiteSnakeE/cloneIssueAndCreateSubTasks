@@ -9,14 +9,6 @@ public interface JiraRepositoryIssue {
 
     Issue getIssue ();
 
-    String getCloneKey();
-
-    void setCloneKey(String cloneKey);
-
-    String getSubtaskKey();
-
-    void setSubtaskKey(String subtaskKey);
-
     List<IssueLink> getIssueLinks();
 
     void setIssueLinks(List<IssueLink> issueLinks );

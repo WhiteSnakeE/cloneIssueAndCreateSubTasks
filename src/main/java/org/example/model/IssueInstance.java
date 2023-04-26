@@ -10,19 +10,7 @@ import java.util.List;
 public class IssueInstance {
     private Issue issue;
 
-    private String cloneKey;
-
-    private String subtaskKey;
-
     private List<IssueLink> issueLinkList;
-
-    public String getSubtaskKey () {
-        return subtaskKey;
-    }
-
-    public void setSubtaskKey (String subtaskKey) {
-        this.subtaskKey = subtaskKey;
-    }
 
     public void setIssue(Issue issue){
         this.issue = issue;
@@ -30,14 +18,6 @@ public class IssueInstance {
 
     public Issue getIssue () {
         return issue;
-    }
-
-    public String getCloneKey () {
-        return cloneKey;
-    }
-
-    public void setCloneKey (String cloneKey) {
-        this.cloneKey = cloneKey;
     }
 
     public List<IssueLink> getIssueLinkList () {
