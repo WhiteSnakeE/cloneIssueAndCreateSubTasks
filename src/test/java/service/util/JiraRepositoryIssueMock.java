@@ -45,7 +45,9 @@ public class JiraRepositoryIssueMock implements JiraRepositoryIssue {
 
     @Override
     public List<IssueLink> getIssueLinks () {
-        return null;
+        IssueLinkType issueLinkType = new IssueLinkType("name","descriprion", IssueLinkType.Direction.OUTBOUND);
+        IssueLink issueLink = new IssueLink("FIXBIT-1000", URI.create("someUri"),issueLinkType);
+        return List.of(issueLink);
     }
 
     @Override

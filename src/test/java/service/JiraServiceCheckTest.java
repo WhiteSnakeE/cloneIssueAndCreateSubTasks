@@ -1,5 +1,6 @@
 package service;
 
+import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import org.example.services.JiraServiceCheck;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -9,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import service.util.JiraRepositoryCheckMock;
 import service.util.JiraRepositoryIssueMock;
+
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 
@@ -30,10 +33,11 @@ public class JiraServiceCheckTest {
         Assertions.assertTrue(isExist);
     }
 
-//    @Test
-//    public void checkIfTestCasesIssueLinksEmpty () {
-//        when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(false);
-//        boolean isExist = jiraServiceCheck.checkIfTestCasesExist();
-//        Assertions.assertFalse(isExist);
-//    }
+    @Test
+    public void checkIfIssueLinksExist(){
+        List<IssueLink> issueLinks = jiraServiceCheck.collectIssueLinks();
+        Assertions.assertEquals(1,issueLinks.size());
+        Assertions.assertEquals("FIXBIT-1000",issueLinks.get(0).getTargetIssueKey());
+    }
+
 }

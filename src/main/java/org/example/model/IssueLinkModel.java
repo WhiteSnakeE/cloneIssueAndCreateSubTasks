@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.net.URI;
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class IssueLinkModel implements Serializable {
     private String targetIssueKey;

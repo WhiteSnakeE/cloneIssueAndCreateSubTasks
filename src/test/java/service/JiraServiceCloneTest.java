@@ -1,6 +1,8 @@
 package service;
 
 import com.atlassian.jira.rest.client.api.domain.BasicIssue;
+import com.atlassian.jira.rest.client.api.domain.IssueLink;
+import com.atlassian.jira.rest.client.api.domain.IssueLinkType;
 import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 
@@ -15,9 +17,9 @@ import service.util.JiraRepositoryUpdateMock;
 @ExtendWith(MockitoExtension.class)
 public class JiraServiceCloneTest {
 
-    private JiraRepositoryIssueMock jiraRepositoryIssueMock = new JiraRepositoryIssueMock();
+    private final JiraRepositoryIssueMock jiraRepositoryIssueMock = new JiraRepositoryIssueMock();
 
-    private JiraRepositoryUpdateMock jiraRepositoryUpdateMock = new JiraRepositoryUpdateMock();
+    private final JiraRepositoryUpdateMock jiraRepositoryUpdateMock = new JiraRepositoryUpdateMock();
 
     JiraServiceClone jiraServiceClone = new JiraServiceClone(jiraRepositoryIssueMock, jiraRepositoryUpdateMock);
 
@@ -39,6 +41,13 @@ public class JiraServiceCloneTest {
         String name = complexIssueInputFieldValue.getValuesMap().get("name").toString();
         Assertions.assertEquals(name,jiraRepositoryIssueMock.getIssue().getAssignee().getName());
 
+    }
+    @Test
+    public void setSubtaskLinkToClone (){
+        IssueLinkType issueLinkType = new IssueLinkType("Relates","relates to", IssueLinkType.Direction.OUTBOUND);
+        IssueLink issueLink = new IssueLink("FIXBIT-18",null,issueLinkType);
+        String key = jiraServiceClone.setSubtaskLinkToClone(issueLink);
+        Assertions.assertEquals("FIXBIT-18",key);
     }
 
 }
