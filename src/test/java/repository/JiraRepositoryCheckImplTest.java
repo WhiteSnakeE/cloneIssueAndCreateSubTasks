@@ -4,12 +4,12 @@ import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.SearchRestClient;
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
+import io.atlassian.util.concurrent.Promise;
 import org.example.model.IssueInstance;
 import org.example.repository.JiraRepositoryCheckImpl;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -20,29 +20,41 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-//@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class JiraRepositoryCheckImplTest {
-
-
-    private JiraRestClient jiraRestClient;
-
     @Mock
-    private SearchRestClient searchRestClient = jiraRestClient.getSearchClient();
+    private JiraRestClient jiraRestClient;
+    @Mock
+    private SearchRestClient searchRestClient;
+    @Mock
+    private Promise<SearchResult> promise;
     @Mock
     private IssueInstance issueInstance;
-    @InjectMocks
-    private JiraRepositoryCheckImpl jiraRepositoryCheckImpl = new JiraRepositoryCheckImpl(jiraRestClient, issueInstance);
 
-    //@Test
+   private JiraRepositoryCheckImpl jiraRepositoryCheckImpl;
+
+    @Before
+    public void setup(){
+        when(jiraRestClient.getSearchClient()).thenReturn(searchRestClient);
+        jiraRepositoryCheckImpl = new JiraRepositoryCheckImpl(jiraRestClient,issueInstance);
+    }
+
+    @Test
     public void isProjectExist () throws ExecutionException, InterruptedException, TimeoutException {
+
         Issue issue = new Issue("summary", URI.create("https://sytoss.atlassian.net/rest/api/3/issue/14643"), "FIXBIT-18", null, null, null, null, "description", null, null, null, null, null, null, null, null, new ArrayList<>(), new ArrayList<>(), null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         Iterable<Issue> issues = List.of(issue);
         SearchResult searchResult = new SearchResult(0, 1, 1, issues);
-        when(searchRestClient.searchJql("anyString()", 1, 0, null).get(2, TimeUnit.SECONDS)).thenReturn(searchResult);
-        Assertions.assertEquals(jiraRepositoryCheckImpl.isProjectExist(anyString()), searchResult);
+        when(searchRestClient.searchJql(anyString(), anyInt(), anyInt(), anyObject())).thenReturn(promise);
+        when(promise.get(2, TimeUnit.SECONDS)).thenReturn(searchResult);
+        //        when(jiraRestClient.getSearchClient().searchJql("anyString()", 1, 0, null).get(2, TimeUnit.SECONDS)).thenReturn(searchResult);
+        jiraRepositoryCheckImpl.isProjectExist("hello");
+        verify(issueInstance).setIssue(issue);
+        // verify(jiraRestClient.getSearchClient().searchJql());
+//        Assertions.assertEquals(jiraRepositoryCheckImpl.isProjectExist(anyString()), searchResult);
     }
 }

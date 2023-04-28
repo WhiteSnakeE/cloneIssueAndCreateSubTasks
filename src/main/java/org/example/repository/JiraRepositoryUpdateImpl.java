@@ -27,7 +27,7 @@ public class JiraRepositoryUpdateImpl implements JiraRepositoryUpdate {
     @Override
     public BasicIssue clone (IssueInput issueInput) {
         try {
-            return jiraRestClient.getIssueClient().createIssue(issueInput).get(2, TimeUnit.SECONDS);
+            return jiraRestClient.getIssueClient().createIssue(issueInput).get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new RuntimeException(e);
         }
