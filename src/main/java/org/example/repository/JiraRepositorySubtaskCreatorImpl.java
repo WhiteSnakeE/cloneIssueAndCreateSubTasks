@@ -2,7 +2,6 @@ package org.example.repository;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
-import org.example.model.IssueInstance;
 import org.example.repository.interfaces.JiraRepositorySubtaskCreator;
 import org.springframework.stereotype.Repository;
 

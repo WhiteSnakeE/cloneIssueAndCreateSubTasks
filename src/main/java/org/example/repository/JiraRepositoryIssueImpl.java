@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Slf4j
 @Repository
 @Profile({"dev"})
 public class JiraRepositoryIssueImpl implements JiraRepositoryIssue {
