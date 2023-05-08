@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "label": "Issue Key",
+      "type": "textfield",
+      "id": "Field_1gtmdb7",
+      "key": "IssueKey",
+      "description": "What issue do you want to clone and link subtasks?",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "IssueKeyForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.1.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "schemaVersion": 4
+}

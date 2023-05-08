@@ -37,9 +37,9 @@ public class JiraRepositoryCheckImpl implements JiraRepositoryCheck {
             searchResult = searchRestClient.searchJql(jql, 1, 0, null).get(2, TimeUnit.SECONDS);
             issueInstance.setIssue(searchResult.getIssues().iterator().next());
             return searchResult;
-        } catch (RestClientException e) {
+        } catch (RestClientException | ExecutionException e) {
             throw new IssueNotExistException(e);
-        } catch (ExecutionException | TimeoutException | InterruptedException e) {
+        } catch (  TimeoutException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

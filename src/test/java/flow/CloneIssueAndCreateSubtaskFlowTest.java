@@ -2,13 +2,19 @@ package flow;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+
+import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.extension.process_test_coverage.junit.rules.TestCoverageProcessEngineRuleBuilder;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.example.services.JiraServiceCheck;
 import org.example.services.JiraServiceClone;
 import org.example.services.JiraServiceSubTaskCreator;
@@ -18,9 +24,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.List;
 
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
@@ -43,7 +52,8 @@ public class CloneIssueAndCreateSubtaskFlowTest {
     private DelegateExecution execution;
 
     @Before
-    public void setup () {
+    public void setup() {
+        //  Mocks.register("PrepareIssueKeyInTasklist", new FindIssueByProjectKeyTask(jiraServiceCheck));
         Mocks.register("FindIssueByProjectKey", new FindIssueByProjectKeyTask(jiraServiceCheck));
         Mocks.register("CheckTaskCasesInIssue", new CheckTaskCasesInIssueTask(jiraServiceCheck));
         Mocks.register("CollectTaskCases", new CollectTaskCasesTask(jiraServiceCheck));
@@ -53,12 +63,15 @@ public class CloneIssueAndCreateSubtaskFlowTest {
     }
 
     @Test
-    public void taskCasesAreAbsent () {
+    public void taskCasesAreAbsent() {
         ProcessScenario main = mock(ProcessScenario.class);
         when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(false);
+        when(main.waitsAtUserTask("PrepareIssueKeyInTasklist")).thenReturn(
+                TaskDelegate::complete
+        );
         Scenario.run(main).startByKey("cloneIssueAndCreateSubTasks").execute();
 
-        verify(main).hasStarted("ProcessStartedStartMessageEvent");
+        verify(main).hasStarted("Event_0aq075u");
         verify(main).hasCompleted("FindIssueByProjectKeyTask");
         verify(main).hasCompleted("CheckTaskCasesInIssueTask");
         verify(main, never()).hasStarted("CollectTaskCasesTask");
@@ -66,39 +79,38 @@ public class CloneIssueAndCreateSubtaskFlowTest {
     }
 
     @Test
-    public void doneProcess () {
+    public void doneProcess() {
+
         ProcessScenario main = mock(ProcessScenario.class);
         when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(true);
+
+        when(main.waitsAtUserTask("PrepareIssueKeyInTasklist")).thenReturn(
+                TaskDelegate::complete
+        );
         Scenario.run(main).startByKey("cloneIssueAndCreateSubTasks").execute();
-        verify(main).hasStarted("ProcessStartedStartMessageEvent");
+        verify(main).hasStarted("Event_0aq075u");
+        verify(main).hasCompleted("PrepareIssueKeyInTasklist");
         verify(main).hasCompleted("FindIssueByProjectKeyTask");
         verify(main).hasCompleted("CheckTaskCasesInIssueTask");
         verify(main).hasCompleted("CollectTaskCasesTask");
         verify(main).hasCompleted("CloneIssueTask");
         verify(main).hasStarted("RelatedLinksToCloneSubProcess#multiInstanceBody");
-       // verify(main).hasStarted("testCasesCollectedStartEvent");
-
-//        verify(main).hasCompleted("createSubTaskUnderTaskCaseTask");
-//        verify(main).hasCompleted("RelatesSubtaskToCloneIssueTask");
-//        verify(main).hasFinished("ProcessEndedEndEvent");
+        verify(main).hasFinished("ProcessEndedEndEvent");
     }
 
     @Test
-    public void subProcess () {
+    public void doneProcessMessageStartEvent() {
         ProcessScenario main = mock(ProcessScenario.class);
-       // when(main.runsCallActivity("cloneIssueAndCreateSubTasks")).thenReturn(Scenario.use());
         when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(true);
-        Scenario.run(main).startByKey("cloneIssueAndCreateSubTasks").execute();
+        Scenario.run(main).startByMessage("IssueKey").execute();
         verify(main).hasStarted("ProcessStartedStartMessageEvent");
         verify(main).hasCompleted("FindIssueByProjectKeyTask");
         verify(main).hasCompleted("CheckTaskCasesInIssueTask");
         verify(main).hasCompleted("CollectTaskCasesTask");
         verify(main).hasCompleted("CloneIssueTask");
         verify(main).hasStarted("RelatedLinksToCloneSubProcess#multiInstanceBody");
-        // verify(main).hasStarted("testCasesCollectedStartEvent");
+        verify(main).hasFinished("ProcessEndedEndEvent");
 
-        //        verify(main).hasCompleted("createSubTaskUnderTaskCaseTask");
-        //        verify(main).hasCompleted("RelatesSubtaskToCloneIssueTask");
-        //        verify(main).hasFinished("ProcessEndedEndEvent");
     }
+
 }

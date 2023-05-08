@@ -9,6 +9,8 @@ import java.util.List;
 public class ProcessEnv {
     public static final String ISSUE_KEY = "issueKey";
 
+    public static final String IS_KEY_PRESENT = "isKeyPresent";
+
     public static final String ARE_NEED_TASKS_PRESENT = "tasksArePresent";
 
     public static final String JIRA_TASK_CASES = "taskCases";
@@ -26,7 +28,9 @@ public class ProcessEnv {
     public String getSubtaskKey () {
         return (String) variableScope.getVariable(SUBTASK_KEY);
     }
-
+    public boolean isKeyPresent(){
+        return (boolean) variableScope.getVariable(IS_KEY_PRESENT);
+    }
     public void setIssueKey (String projectName) {
         variableScope.setVariable(ISSUE_KEY, projectName);
     }
@@ -34,7 +38,6 @@ public class ProcessEnv {
     public void setSubtaskKey (String subtaskKey) {
         variableScope.setVariable(SUBTASK_KEY, subtaskKey);
     }
-
 
     public void setCloneKey (String cloneKey) {
         variableScope.setVariable(CLONE_KEY, cloneKey);
