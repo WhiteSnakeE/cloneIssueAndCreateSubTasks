@@ -11,35 +11,32 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import service.util.JiraRepositoryIssueMock;
+import service.util.IssueInstanceTestModel;
 import service.util.JiraRepositoryUpdateMock;
 
 @ExtendWith(MockitoExtension.class)
 public class JiraServiceCloneTest {
-
-    private final JiraRepositoryIssueMock jiraRepositoryIssueMock = new JiraRepositoryIssueMock();
-
     private final JiraRepositoryUpdateMock jiraRepositoryUpdateMock = new JiraRepositoryUpdateMock();
 
-    JiraServiceClone jiraServiceClone = new JiraServiceClone(jiraRepositoryIssueMock, jiraRepositoryUpdateMock);
+    private final JiraServiceClone jiraServiceClone = new JiraServiceClone( jiraRepositoryUpdateMock);
 
     @Test
     public void cloneIssue () {
-        String key = jiraServiceClone.cloneIssue();
+        String key = jiraServiceClone.cloneIssue(new IssueInstanceTestModel().getIssue());
         Assertions.assertEquals("FIXBIT",key);
     }
 
     @Test
     public void createCloneIssue () {
-        BasicIssue basicIssue = jiraServiceClone.createCloneIssue(jiraRepositoryIssueMock.getIssue());
+        BasicIssue basicIssue = jiraServiceClone.createCloneIssue(new IssueInstanceTestModel().getIssue());
         Assertions.assertEquals("FIXBIT", basicIssue.getKey());
     }
     @Test
     public void updateNotNullIssueFields(){
-        IssueInput issueInput = jiraServiceClone.updateAssigneeAndAttachment(jiraRepositoryIssueMock.getIssue());
+        IssueInput issueInput = jiraServiceClone.updateAssigneeAndAttachment(new IssueInstanceTestModel().getIssue());
         ComplexIssueInputFieldValue complexIssueInputFieldValue = (ComplexIssueInputFieldValue) issueInput.getField("assignee").getValue();
         String name = complexIssueInputFieldValue.getValuesMap().get("name").toString();
-        Assertions.assertEquals(name,jiraRepositoryIssueMock.getIssue().getAssignee().getName());
+        Assertions.assertEquals(name,new IssueInstanceTestModel().getIssue().getAssignee().getName());
 
     }
     @Test

@@ -28,17 +28,20 @@ public class RelatesSubtaskToCloneIssueTaskTest {
     private DelegateExecution execution;
     @Mock
     private JiraServiceClone jiraServiceClone;
+    @Mock
+    private IssueLinkConverter issueLinkConverter;
 
     @InjectMocks
     private RelatesSubtaskToCloneIssueTask task;
+
     @Test
-    public void givenSubtask_whenWeRelatesToClone_CloneHaveToHasSubtask(){
-        IssueLinkType issueLinkType = new IssueLinkType("name","descriprion", IssueLinkType.Direction.OUTBOUND);
-        IssueLink issueLink = new IssueLink("FIXBIT-1000", URI.create("someUri"),issueLinkType);
-        List<IssueLinkModel> issueLinkModels = new IssueLinkConverter().convertToIssueLinkModel(List.of(issueLink));
-        when(jiraServiceClone.setSubtaskLinkToClone(issueLink,null,null)).thenReturn("FIXBIT-1000");
-        when(execution.getVariable(ProcessEnv.TASK_CASE)).thenReturn(issueLinkModels.get(0));
+    public void givenSubtask_whenWeRelatesToClone_CloneHaveToHasSubtask () {
+        IssueLinkType issueLinkType = new IssueLinkType("name", "descriprion", IssueLinkType.Direction.OUTBOUND);
+        IssueLink issueLink = new IssueLink("FIXBIT-1000", URI.create("someUri"), issueLinkType);
+        when(issueLinkConverter.convertToIssueLink((IssueLinkModel) execution.getVariable(ProcessEnv.TASK_CASE))).thenReturn(issueLink);
+        when(jiraServiceClone.setSubtaskLinkToClone(issueLink, (String) execution.getVariable(ProcessEnv.CLONE_KEY),(String) execution.getVariable(ProcessEnv.SUBTASK_KEY))).thenReturn("FIXBIT-1000");
         task.execute(execution);
-        verify(execution).setVariable(ProcessEnv.SUBTASK_KEY,"FIXBIT-1000");
+        verify(execution).setVariable(ProcessEnv.SUBTASK_KEY, "FIXBIT-1000");
+
     }
 }

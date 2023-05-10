@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.example.ProcessEnv;
 
+import org.example.model.IssueInstance;
 import org.example.services.JiraServiceSubTaskCreator;
 import org.example.services.converter.IssueLinkConverter;
 import org.springframework.stereotype.Component;
@@ -16,16 +17,23 @@ public class CreateSubTaskUnderTaskCaseTask implements JavaDelegate {
 
     private final JiraServiceSubTaskCreator jiraServiceSubTaskCreator;
 
+    private final IssueInstance issueInstance;
 
-    public CreateSubTaskUnderTaskCaseTask (JiraServiceSubTaskCreator jiraServiceSubTaskCreator) {
+    private final IssueLinkConverter issueLinkConverter;
+
+
+    public CreateSubTaskUnderTaskCaseTask (JiraServiceSubTaskCreator jiraServiceSubTaskCreator,
+            IssueInstance issueInstance, IssueLinkConverter issueLinkConverter) {
         this.jiraServiceSubTaskCreator = jiraServiceSubTaskCreator;
+        this.issueInstance = issueInstance;
+        this.issueLinkConverter = issueLinkConverter;
     }
 
     @Override
     public void execute (DelegateExecution delegateExecution) {
         ProcessEnv processEnv = new ProcessEnv(delegateExecution);
-        IssueLink issueLink = new IssueLinkConverter().convertToIssueLink(processEnv.getTaskCase());
-        String key = jiraServiceSubTaskCreator.createSubTask(issueLink);
+        IssueLink issueLink = issueLinkConverter.convertToIssueLink(processEnv.getTaskCase());
+        String key = jiraServiceSubTaskCreator.createSubTask(issueLink,issueInstance.getIssue().getProject().getKey());
         processEnv.setSubtaskKey(key);
         log.info("subtask key is {}",key);
     }

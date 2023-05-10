@@ -7,7 +7,6 @@ import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
-import org.example.repository.interfaces.JiraRepositoryIssue;
 import org.example.repository.interfaces.JiraRepositoryUpdate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,16 +18,15 @@ import java.util.stream.StreamSupport;
 @Service
 public class JiraServiceClone {
 
-    private final JiraRepositoryIssue jiraRepositoryIssue;
+
 
     private final JiraRepositoryUpdate jiraRepositoryUpdate;
 
     private static final String name = "CLONE - ";
 
 
-    public JiraServiceClone (@Qualifier("jiraRepositoryIssueImpl") JiraRepositoryIssue jiraRepositoryIssue,
+    public JiraServiceClone (
             JiraRepositoryUpdate jiraRepositoryUpdate) {
-        this.jiraRepositoryIssue = jiraRepositoryIssue;
         this.jiraRepositoryUpdate = jiraRepositoryUpdate;
     }
 
@@ -40,7 +38,7 @@ public class JiraServiceClone {
     public String cloneIssue (Issue issue) {
         BasicIssue basicIssue = createCloneIssue(issue);
         jiraRepositoryUpdate.updateClone(basicIssue.getKey(), updateAssigneeAndAttachment(issue));
-        jiraRepositoryUpdate.setLinkToIssue(jiraRepositoryIssue.getIssue().getKey(), basicIssue.getKey(),LinkTypeEnum.CLONERS.linkType);
+        jiraRepositoryUpdate.setLinkToIssue(issue.getKey(), basicIssue.getKey(),LinkTypeEnum.CLONERS.linkType);
         return basicIssue.getKey();
     }
 

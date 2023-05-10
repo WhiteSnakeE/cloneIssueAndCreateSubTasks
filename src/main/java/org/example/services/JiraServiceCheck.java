@@ -41,11 +41,4 @@ public class JiraServiceCheck {
         return !issueLinks.isEmpty();
     }
 
-    public List<IssueLink> collectIssueLinks () {
-        return issueInstance.getIssueLinkList();
-    }
-
-
-
-
 }

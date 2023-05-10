@@ -15,6 +15,7 @@ import org.example.model.IssueInstance;
 import org.example.services.JiraServiceCheck;
 import org.example.services.JiraServiceClone;
 import org.example.services.JiraServiceSubTaskCreator;
+import org.example.services.converter.IssueLinkConverter;
 import org.example.task.*;
 import org.junit.Before;
 import org.junit.Rule;
@@ -50,16 +51,16 @@ public class CloneIssueAndCreateSubtaskFlowTest {
         //  Mocks.register("PrepareIssueKeyInTasklist", new FindIssueByProjectKeyTask(jiraServiceCheck));
         Mocks.register("FindIssueByProjectKey", new FindIssueByProjectKeyTask(jiraServiceCheck));
         Mocks.register("CheckTaskCasesInIssue", new CheckTaskCasesInIssueTask(jiraServiceCheck, mock(IssueInstance.class)));
-        Mocks.register("CollectTaskCases", new CollectTaskCasesTask(jiraServiceCheck, issueInstance));
-        Mocks.register("CloneIssue", new CloneIssueTask(jiraServiceClone, issueInstance));
-        Mocks.register("CreateSubTaskUnderTaskCase", new CreateSubTaskUnderTaskCaseTask(jiraServiceSubTaskCreator));
-        Mocks.register("RelatesSubtaskToCloneIssue", new RelatesSubtaskToCloneIssueTask(jiraServiceClone, issueLinkConverter));
+        Mocks.register("CollectTaskCases", new CollectTaskCasesTask(mock(IssueInstance.class), new IssueLinkConverter()));
+        Mocks.register("CloneIssue", new CloneIssueTask(jiraServiceClone, mock(IssueInstance.class)));
+        Mocks.register("CreateSubTaskUnderTaskCase", new CreateSubTaskUnderTaskCaseTask(jiraServiceSubTaskCreator, mock(IssueInstance.class), new IssueLinkConverter()));
+        Mocks.register("RelatesSubtaskToCloneIssue", new RelatesSubtaskToCloneIssueTask(jiraServiceClone, new IssueLinkConverter()));
     }
 
     @Test
     public void taskCasesAreAbsent() {
         ProcessScenario main = mock(ProcessScenario.class);
-        when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(false);
+        when(jiraServiceCheck.checkIfTestCasesExist(any())).thenReturn(false);
         when(main.waitsAtUserTask("PrepareIssueKeyInTasklist")).thenReturn(
                 TaskDelegate::complete
         );
@@ -76,7 +77,7 @@ public class CloneIssueAndCreateSubtaskFlowTest {
     public void doneProcess() {
 
         ProcessScenario main = mock(ProcessScenario.class);
-        when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(true);
+        when(jiraServiceCheck.checkIfTestCasesExist(any())).thenReturn(true);
 
         when(main.waitsAtUserTask("PrepareIssueKeyInTasklist")).thenReturn(
                 TaskDelegate::complete
@@ -95,7 +96,7 @@ public class CloneIssueAndCreateSubtaskFlowTest {
     @Test
     public void doneProcessMessageStartEvent() {
         ProcessScenario main = mock(ProcessScenario.class);
-        when(jiraServiceCheck.checkIfTestCasesExist()).thenReturn(true);
+        when(jiraServiceCheck.checkIfTestCasesExist(any())).thenReturn(true);
         Scenario.run(main).startByMessage("IssueKey").execute();
         verify(main).hasStarted("ProcessStartedStartMessageEvent");
         verify(main).hasCompleted("FindIssueByProjectKeyTask");
