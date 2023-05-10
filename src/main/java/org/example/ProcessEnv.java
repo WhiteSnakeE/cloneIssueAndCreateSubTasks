@@ -1,6 +1,6 @@
 package org.example;
 
-import com.atlassian.jira.rest.client.api.domain.IssueLink;
+
 import org.camunda.bpm.engine.delegate.VariableScope;
 import org.example.model.IssueLinkModel;
 
@@ -8,8 +8,6 @@ import java.util.List;
 
 public class ProcessEnv {
     public static final String ISSUE_KEY = "issueKey";
-
-    public static final String IS_KEY_PRESENT = "isKeyPresent";
 
     public static final String ARE_NEED_TASKS_PRESENT = "tasksArePresent";
 
@@ -28,9 +26,7 @@ public class ProcessEnv {
     public String getSubtaskKey () {
         return (String) variableScope.getVariable(SUBTASK_KEY);
     }
-    public boolean isKeyPresent(){
-        return (boolean) variableScope.getVariable(IS_KEY_PRESENT);
-    }
+
     public void setIssueKey (String projectName) {
         variableScope.setVariable(ISSUE_KEY, projectName);
     }
