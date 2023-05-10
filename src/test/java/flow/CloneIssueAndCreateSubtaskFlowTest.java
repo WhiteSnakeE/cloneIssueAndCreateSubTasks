@@ -2,19 +2,16 @@ package flow;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.extension.process_test_coverage.junit.rules.TestCoverageProcessEngineRuleBuilder;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
+import org.example.model.IssueInstance;
 import org.example.services.JiraServiceCheck;
 import org.example.services.JiraServiceClone;
 import org.example.services.JiraServiceSubTaskCreator;
@@ -27,9 +24,6 @@ import org.mockito.Mock;
 
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
-
-import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
@@ -55,11 +49,11 @@ public class CloneIssueAndCreateSubtaskFlowTest {
     public void setup() {
         //  Mocks.register("PrepareIssueKeyInTasklist", new FindIssueByProjectKeyTask(jiraServiceCheck));
         Mocks.register("FindIssueByProjectKey", new FindIssueByProjectKeyTask(jiraServiceCheck));
-        Mocks.register("CheckTaskCasesInIssue", new CheckTaskCasesInIssueTask(jiraServiceCheck));
-        Mocks.register("CollectTaskCases", new CollectTaskCasesTask(jiraServiceCheck));
-        Mocks.register("CloneIssue", new CloneIssueTask(jiraServiceClone));
+        Mocks.register("CheckTaskCasesInIssue", new CheckTaskCasesInIssueTask(jiraServiceCheck, mock(IssueInstance.class)));
+        Mocks.register("CollectTaskCases", new CollectTaskCasesTask(jiraServiceCheck, issueInstance));
+        Mocks.register("CloneIssue", new CloneIssueTask(jiraServiceClone, issueInstance));
         Mocks.register("CreateSubTaskUnderTaskCase", new CreateSubTaskUnderTaskCaseTask(jiraServiceSubTaskCreator));
-        Mocks.register("RelatesSubtaskToCloneIssue", new RelatesSubtaskToCloneIssueTask(jiraServiceClone));
+        Mocks.register("RelatesSubtaskToCloneIssue", new RelatesSubtaskToCloneIssueTask(jiraServiceClone, issueLinkConverter));
     }
 
     @Test

@@ -2,9 +2,8 @@ package org.example.services;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
+import org.example.model.IssueInstance;
 import org.example.repository.interfaces.JiraRepositoryCheck;
-import org.example.repository.interfaces.JiraRepositoryIssue;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,20 +16,18 @@ public class JiraServiceCheck {
     private static final String jql = "key = ";
     private final JiraRepositoryCheck jiraRepositoryCheck;
 
-    private final JiraRepositoryIssue jiraRepositoryIssue;
+    private final IssueInstance issueInstance;
 
-    public JiraServiceCheck (JiraRepositoryCheck jiraRepositoryCheck,
-            @Qualifier("jiraRepositoryIssueImpl") JiraRepositoryIssue jiraRepositoryIssue) {
+    public JiraServiceCheck (JiraRepositoryCheck jiraRepositoryCheck, IssueInstance issueInstance) {
         this.jiraRepositoryCheck = jiraRepositoryCheck;
-        this.jiraRepositoryIssue = jiraRepositoryIssue;
+        this.issueInstance = issueInstance;
     }
 
     public String checkIfIssueExist (String key) {
         return jiraRepositoryCheck.isProjectExist(jql + key).getIssues().iterator().next().getKey();
     }
 
-    public boolean checkIfTestCasesExist () {
-        Issue issue = jiraRepositoryIssue.getIssue();
+    public boolean checkIfTestCasesExist (Issue issue) {
         List<IssueLink> issueLinks = new ArrayList<>();
         if (issue.getIssueLinks() == null) {
             return false;
@@ -40,12 +37,12 @@ public class JiraServiceCheck {
                 issueLinks.add(issueLink);
             }
         }
-        jiraRepositoryIssue.setIssueLinks(issueLinks);
+        issueInstance.setIssueLinkList(issueLinks);
         return !issueLinks.isEmpty();
     }
 
     public List<IssueLink> collectIssueLinks () {
-        return jiraRepositoryIssue.getIssueLinks();
+        return issueInstance.getIssueLinkList();
     }
 
 

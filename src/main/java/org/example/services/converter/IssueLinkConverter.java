@@ -3,10 +3,11 @@ package org.example.services.converter;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import com.atlassian.jira.rest.client.api.domain.IssueLinkType;
 import org.example.model.IssueLinkModel;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class IssueLinkConverter {
     public List<IssueLinkModel> convertToIssueLinkModel (List<IssueLink> issueLinkList) {
         List<IssueLinkModel> issueLinkModels = new ArrayList<>();

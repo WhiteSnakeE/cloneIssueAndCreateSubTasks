@@ -27,4 +27,5 @@ public class IssueInstance {
     public void setIssueLinkList (List<IssueLink> issueLinkList) {
         this.issueLinkList = issueLinkList;
     }
+
 }

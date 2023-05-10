@@ -37,8 +37,7 @@ public class JiraServiceClone {
         return jiraRepositoryUpdate.setLinkToIssue(subTaskKey, cloneKey, LinkTypeEnum.RELATES.linkType);
     }
 
-    public String cloneIssue () {
-        Issue issue = jiraRepositoryIssue.getIssue();
+    public String cloneIssue (Issue issue) {
         BasicIssue basicIssue = createCloneIssue(issue);
         jiraRepositoryUpdate.updateClone(basicIssue.getKey(), updateAssigneeAndAttachment(issue));
         jiraRepositoryUpdate.setLinkToIssue(jiraRepositoryIssue.getIssue().getKey(), basicIssue.getKey(),LinkTypeEnum.CLONERS.linkType);
