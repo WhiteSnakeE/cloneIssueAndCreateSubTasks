@@ -1,8 +1,6 @@
 package service.util;
 
-import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
-
 import org.example.repository.interfaces.JiraRepositorySubtaskCreator;
 
 

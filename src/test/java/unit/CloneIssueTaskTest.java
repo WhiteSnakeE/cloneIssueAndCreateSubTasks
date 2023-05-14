@@ -6,14 +6,12 @@ import org.example.model.IssueInstance;
 import org.example.services.JiraServiceClone;
 import org.example.task.CloneIssueTask;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import service.util.IssueInstanceTestModel;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

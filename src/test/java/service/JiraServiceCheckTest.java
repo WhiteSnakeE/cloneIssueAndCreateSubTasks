@@ -1,6 +1,5 @@
 package service;
 
-import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import org.example.model.IssueInstance;
 import org.example.services.JiraServiceCheck;
 import org.junit.Test;
@@ -9,8 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import service.util.IssueInstanceTestModel;
 import service.util.JiraRepositoryCheckMock;
-
-import java.util.List;
 
 import static org.mockito.Mockito.mock;
 

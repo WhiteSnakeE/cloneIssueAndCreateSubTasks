@@ -6,8 +6,6 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.example.ProcessEnv;
 import org.example.model.IssueInstance;
 import org.example.model.IssueLinkModel;
-import org.example.services.JiraServiceCheck;
-import org.example.services.JiraServiceClone;
 import org.example.services.converter.IssueLinkConverter;
 import org.example.task.CollectTaskCasesTask;
 import org.junit.Test;
@@ -28,8 +26,6 @@ public class CollectTaskCasesTaskTest {
 
     @Mock
     private DelegateExecution execution;
-    @Mock
-    private JiraServiceCheck jiraServiceCheck;
     @Mock
     private IssueInstance issueInstance;
     @Mock

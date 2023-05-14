@@ -1,7 +1,6 @@
 package service.util;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
-import com.atlassian.jira.rest.client.api.domain.IssueLink;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import org.example.repository.interfaces.JiraRepositoryCheck;
 import org.springframework.context.annotation.Profile;

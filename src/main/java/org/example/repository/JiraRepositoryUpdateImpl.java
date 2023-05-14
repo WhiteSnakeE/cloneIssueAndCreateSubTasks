@@ -24,7 +24,7 @@ public class JiraRepositoryUpdateImpl implements JiraRepositoryUpdate {
     @Override
     public BasicIssue clone (IssueInput issueInput) {
         try {
-            return jiraRestClient.getIssueClient().createIssue(issueInput).get(5, TimeUnit.SECONDS);
+            return jiraRestClient.getIssueClient().createIssue(issueInput).get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new RuntimeException(e);
         }
@@ -33,7 +33,7 @@ public class JiraRepositoryUpdateImpl implements JiraRepositoryUpdate {
     @Override
     public void updateClone (String key, IssueInput issueInput) {
         try {
-            jiraRestClient.getIssueClient().updateIssue(key, issueInput).get(2,TimeUnit.SECONDS);
+            jiraRestClient.getIssueClient().updateIssue(key, issueInput).get(10,TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new RuntimeException(e);
         }
@@ -45,7 +45,7 @@ public class JiraRepositoryUpdateImpl implements JiraRepositoryUpdate {
         try {
             jiraRestClient.getIssueClient()
                     .linkIssue(linkIssuesInput)
-                    .get(2,TimeUnit.SECONDS);
+                    .get(10,TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new RuntimeException(e);
         }

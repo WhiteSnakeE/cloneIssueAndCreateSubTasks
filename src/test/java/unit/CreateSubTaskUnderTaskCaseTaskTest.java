@@ -17,7 +17,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import service.util.IssueInstanceTestModel;
 
 import java.net.URI;
-import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

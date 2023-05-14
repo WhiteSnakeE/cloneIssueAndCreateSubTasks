@@ -34,7 +34,7 @@ public class JiraRepositoryCheckImpl implements JiraRepositoryCheck {
     public SearchResult isProjectExist (String jql) {
         SearchResult searchResult;
         try {
-            searchResult = searchRestClient.searchJql(jql, 1, 0, null).get(2, TimeUnit.SECONDS);
+            searchResult = searchRestClient.searchJql(jql, 1, 0, null).get(10, TimeUnit.SECONDS);
             issueInstance.setIssue(searchResult.getIssues().iterator().next());
             return searchResult;
         } catch (RestClientException | ExecutionException e) {

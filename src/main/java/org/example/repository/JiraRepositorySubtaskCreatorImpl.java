@@ -22,7 +22,7 @@ public class JiraRepositorySubtaskCreatorImpl implements JiraRepositorySubtaskCr
     public String createSubTask (IssueInput subtask) {
         String key = null;
         try {
-            key = jiraRestClient.getIssueClient().createIssue(subtask).get(2, TimeUnit.SECONDS).getKey();
+            key = jiraRestClient.getIssueClient().createIssue(subtask).get(10, TimeUnit.SECONDS).getKey();
         } catch (InterruptedException | TimeoutException | ExecutionException e) {
             throw new RuntimeException(e);
         }
