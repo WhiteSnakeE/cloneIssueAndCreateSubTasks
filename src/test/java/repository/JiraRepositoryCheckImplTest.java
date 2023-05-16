@@ -52,7 +52,7 @@ public class JiraRepositoryCheckImplTest {
         Iterable<Issue> issues = List.of(issue);
         SearchResult searchResult = new SearchResult(0, 1, 1, issues);
         when(searchRestClient.searchJql(anyString(), anyInt(), anyInt(), anyObject())).thenReturn(promise);
-        when(promise.get(2, TimeUnit.SECONDS)).thenReturn(searchResult);
+        when(promise.get(10, TimeUnit.SECONDS)).thenReturn(searchResult);
         jiraRepositoryCheckImpl.isProjectExist("hello");
         verify(issueInstance).setIssue(issue);
        Assertions.assertEquals( searchResult,jiraRepositoryCheckImpl.isProjectExist("hello"));
@@ -60,7 +60,7 @@ public class JiraRepositoryCheckImplTest {
     @Test
     public void isProjectExistIssueNotExistException () throws ExecutionException, InterruptedException, TimeoutException {
         when(searchRestClient.searchJql(anyString(), anyInt(), anyInt(), anyObject())).thenReturn(promise);
-        when(promise.get(2, TimeUnit.SECONDS)).thenThrow(RestClientException.class);
+        when(promise.get(10, TimeUnit.SECONDS)).thenThrow(RestClientException.class);
         Assertions.assertThrows(IssueNotExistException.class, () -> {
             jiraRepositoryCheckImpl.isProjectExist("hello");
         });
@@ -69,7 +69,7 @@ public class JiraRepositoryCheckImplTest {
     @Test
     public void isProjectExistRuntimeException () throws ExecutionException, InterruptedException, TimeoutException {
         when(searchRestClient.searchJql(anyString(), anyInt(), anyInt(), anyObject())).thenReturn(promise);
-        when(promise.get(2, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
+        when(promise.get(10, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
         Assertions.assertThrows(RuntimeException.class, () -> {
             jiraRepositoryCheckImpl.isProjectExist("hello");
         });

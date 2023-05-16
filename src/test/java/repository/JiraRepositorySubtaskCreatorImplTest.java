@@ -45,7 +45,7 @@ public class JiraRepositorySubtaskCreatorImplTest {
                 .build();
        when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
        when(issueRestClient.createIssue(subtask)).thenReturn(basicIssuePromise);
-       when(basicIssuePromise.get(2,TimeUnit.SECONDS)).thenReturn(basicIssue);
+       when(basicIssuePromise.get(10,TimeUnit.SECONDS)).thenReturn(basicIssue);
        when(basicIssue.getKey()).thenReturn("KEY-20");
        jiraRepositorySubtaskCreator.createSubTask(subtask);
        Assertions.assertEquals("KEY-20",jiraRepositorySubtaskCreator.createSubTask(subtask));
@@ -60,7 +60,7 @@ public class JiraRepositorySubtaskCreatorImplTest {
                 .build();
         when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
         when(issueRestClient.createIssue(subtask)).thenReturn(basicIssuePromise);
-        when(basicIssuePromise.get(2,TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
+        when(basicIssuePromise.get(10,TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
         Assertions.assertThrows(RuntimeException.class,() ->{
             jiraRepositorySubtaskCreator.createSubTask(subtask);
         });

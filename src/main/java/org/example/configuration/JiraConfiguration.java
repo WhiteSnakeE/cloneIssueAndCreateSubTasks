@@ -15,14 +15,18 @@ import java.net.URI;
 @Profile({"dev"})
 public class JiraConfiguration {
 
+    private String user;
+    public void setUser(String user){
+        this.user = user;
+    }
+
     @Bean
     public JiraRestClient jiraRestClient(
             @Value("${jira.user}") String jiraUser,
             @Value("${jira.password}") String jiraPassword,
             @Value("${jira.url}") String url) {
         AsynchronousJiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-        AuthenticationHandler authenticationHandler = new BasicHttpAuthenticationHandler(jiraUser, jiraPassword);
+        AuthenticationHandler authenticationHandler = new BasicHttpAuthenticationHandler(user, jiraPassword);
         return factory.createWithAuthenticationHandler(URI.create(url), authenticationHandler);
-
     }
 }

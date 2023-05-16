@@ -51,7 +51,7 @@ public class JiraRepositoryUpdateImplTest {
                 .build();
         when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
         when(issueRestClient.createIssue(issueInput)).thenReturn(basicIssuePromise);
-        when(basicIssuePromise.get(5, TimeUnit.SECONDS)).thenReturn(basicIssue);
+        when(basicIssuePromise.get(10, TimeUnit.SECONDS)).thenReturn(basicIssue);
         jiraRepositoryUpdate.clone(issueInput);
         Assertions.assertEquals(basicIssue, jiraRepositoryUpdate.clone(issueInput));
     }
@@ -66,7 +66,7 @@ public class JiraRepositoryUpdateImplTest {
                 .build();
         when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
         when(issueRestClient.createIssue(issueInput)).thenReturn(basicIssuePromise);
-        when(basicIssuePromise.get(5, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
+        when(basicIssuePromise.get(10, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
         Assertions.assertThrows(RuntimeException.class, () -> {
             jiraRepositoryUpdate.clone(issueInput);
         });
@@ -82,7 +82,7 @@ public class JiraRepositoryUpdateImplTest {
         when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
         when(issueRestClient.updateIssue("KEY-20", issueInput)).thenReturn(voidPromise);
         jiraRepositoryUpdate.updateClone("KEY-20", issueInput);
-        verify(issueRestClient.updateIssue("KEY-20", issueInput)).get(2, TimeUnit.SECONDS);
+        verify(issueRestClient.updateIssue("KEY-20", issueInput)).get(10, TimeUnit.SECONDS);
     }
 
     @Test
@@ -94,7 +94,7 @@ public class JiraRepositoryUpdateImplTest {
                 .build();
         when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
         when(issueRestClient.updateIssue("KEY-20", issueInput)).thenReturn(voidPromise);
-        when(voidPromise.get(2, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
+        when(voidPromise.get(10, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
         Assertions.assertThrows(RuntimeException.class, () -> {
             jiraRepositoryUpdate.updateClone("KEY-20", issueInput);
         });
