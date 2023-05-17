@@ -6,6 +6,7 @@ import com.atlassian.jira.rest.client.api.domain.BasicIssue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import io.atlassian.util.concurrent.Promise;
+import org.example.configuration.JiraConfiguration;
 import org.example.repository.JiraRepositorySubtaskCreatorImpl;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -20,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,6 +34,8 @@ public class JiraRepositorySubtaskCreatorImplTest {
     private Promise<BasicIssue> basicIssuePromise;
     @Mock
     private BasicIssue basicIssue;
+    @Mock
+    private JiraConfiguration jiraConfiguration;
 
     @InjectMocks
     private JiraRepositorySubtaskCreatorImpl jiraRepositorySubtaskCreator;
@@ -43,12 +47,15 @@ public class JiraRepositorySubtaskCreatorImplTest {
                 .setSummary("Test Run  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM")))
                 .setIssueTypeId(10003L)
                 .build();
+
+        when(jiraConfiguration.getJiraRestClient()).thenReturn(jiraRestClient);
        when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
        when(issueRestClient.createIssue(subtask)).thenReturn(basicIssuePromise);
        when(basicIssuePromise.get(10,TimeUnit.SECONDS)).thenReturn(basicIssue);
        when(basicIssue.getKey()).thenReturn("KEY-20");
        jiraRepositorySubtaskCreator.createSubTask(subtask);
        Assertions.assertEquals("KEY-20",jiraRepositorySubtaskCreator.createSubTask(subtask));
+       jiraConfiguration.close();
     }
 
     @Test
@@ -58,11 +65,12 @@ public class JiraRepositorySubtaskCreatorImplTest {
                 .setSummary("Test Run  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM")))
                 .setIssueTypeId(10003L)
                 .build();
-        when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
-        when(issueRestClient.createIssue(subtask)).thenReturn(basicIssuePromise);
-        when(basicIssuePromise.get(10,TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
+        lenient().when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
+        lenient().when(issueRestClient.createIssue(subtask)).thenReturn(basicIssuePromise);
+        lenient().when(basicIssuePromise.get(10,TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
         Assertions.assertThrows(RuntimeException.class,() ->{
             jiraRepositorySubtaskCreator.createSubTask(subtask);
         });
+        jiraConfiguration.close();
     }
 }

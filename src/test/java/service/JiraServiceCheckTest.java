@@ -1,5 +1,6 @@
 package service;
 
+import org.example.configuration.JiraConfiguration;
 import org.example.model.IssueInstance;
 import org.example.services.JiraServiceCheck;
 import org.junit.Test;
@@ -9,26 +10,24 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import service.util.IssueInstanceTestModel;
 import service.util.JiraRepositoryCheckMock;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
 public class JiraServiceCheckTest {
 
-
-    private final JiraServiceCheck jiraServiceCheck = new JiraServiceCheck(new JiraRepositoryCheckMock(), jiraConfiguration, mock(IssueInstance.class));
+    private final JiraServiceCheck jiraServiceCheck = new JiraServiceCheck(new JiraRepositoryCheckMock(), mock(JiraConfiguration.class), mock(IssueInstance.class));
 
     @Test
-    public void checkIfIssueExistTest () {
+    public void checkIfIssueExistTest() {
         String key = jiraServiceCheck.checkIfIssueExist("FIXBIT-18");
         Assertions.assertEquals(key, "FIXBIT-18");
     }
 
     @Test
-    public void checkIfTestCasesExist () {
+    public void checkIfTestCasesExist() {
         boolean isExist = jiraServiceCheck.checkIfTestCasesExist(new IssueInstanceTestModel().getIssue());
         Assertions.assertTrue(isExist);
     }
-
 
 }

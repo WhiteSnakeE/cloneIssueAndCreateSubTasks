@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
 import org.mockito.junit.MockitoJUnitRunner;
+import service.util.JiraRepositoryCheckMock;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -55,6 +56,7 @@ public class CloneIssueAndCreateSubtaskFlowTest {
         Mocks.register("CloneIssue", new CloneIssueTask(jiraServiceClone, mock(IssueInstance.class)));
         Mocks.register("CreateSubTaskUnderTaskCase", new CreateSubTaskUnderTaskCaseTask(jiraServiceSubTaskCreator, mock(IssueInstance.class), new IssueLinkConverter()));
         Mocks.register("RelatesSubtaskToCloneIssue", new RelatesSubtaskToCloneIssueTask(jiraServiceClone, new IssueLinkConverter()));
+        Mocks.register("CloseJiraRestClient", new CloseJiraRestClient(new JiraRepositoryCheckMock()));
     }
 
     @Test
@@ -90,6 +92,7 @@ public class CloneIssueAndCreateSubtaskFlowTest {
         verify(main).hasCompleted("CollectTaskCasesTask");
         verify(main).hasCompleted("CloneIssueTask");
         verify(main).hasStarted("RelatedLinksToCloneSubProcess#multiInstanceBody");
+        verify(main).hasCompleted("ClosseJiraRestClientTask");
         verify(main).hasFinished("ProcessEndedEndEvent");
     }
 
@@ -104,6 +107,7 @@ public class CloneIssueAndCreateSubtaskFlowTest {
         verify(main).hasCompleted("CollectTaskCasesTask");
         verify(main).hasCompleted("CloneIssueTask");
         verify(main).hasStarted("RelatedLinksToCloneSubProcess#multiInstanceBody");
+        verify(main).hasCompleted("ClosseJiraRestClientTask");
         verify(main).hasFinished("ProcessEndedEndEvent");
 
     }

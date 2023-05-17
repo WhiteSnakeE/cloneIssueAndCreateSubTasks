@@ -2,7 +2,7 @@ package org.example.services;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
-import org.example.configuration.UserConfiguration;
+import org.example.configuration.JiraConfiguration;
 import org.example.model.IssueInstance;
 import org.example.repository.interfaces.JiraRepositoryCheck;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,13 @@ public class JiraServiceCheck {
 
     private final JiraRepositoryCheck jiraRepositoryCheck;
 
-    private final UserConfiguration userConfiguration;
+    private final JiraConfiguration jiraConfiguration;
 
     private final IssueInstance issueInstance;
 
-    public JiraServiceCheck(JiraRepositoryCheck jiraRepositoryCheck, UserConfiguration userConfiguration, IssueInstance issueInstance) {
+    public JiraServiceCheck(JiraRepositoryCheck jiraRepositoryCheck, JiraConfiguration jiraConfiguration, IssueInstance issueInstance) {
         this.jiraRepositoryCheck = jiraRepositoryCheck;
-        this.userConfiguration = userConfiguration;
+        this.jiraConfiguration = jiraConfiguration;
         this.issueInstance = issueInstance;
     }
 
@@ -48,7 +48,7 @@ public class JiraServiceCheck {
     }
 
     public void setUserAndPassword(String user, String password) {
-       userConfiguration.createJiraRestClient(user,password);
+       jiraConfiguration.createJiraRestClient(user,password);
     }
 
 }

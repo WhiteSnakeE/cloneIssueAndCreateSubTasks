@@ -4,7 +4,7 @@ import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.domain.BasicIssue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.LinkIssuesInput;
-import org.example.configuration.UserConfiguration;
+import org.example.configuration.JiraConfiguration;
 import org.example.repository.interfaces.JiraRepositoryUpdate;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -19,15 +19,15 @@ public class JiraRepositoryUpdateImpl implements JiraRepositoryUpdate {
 
     private JiraRestClient jiraRestClient;
 
-    private final UserConfiguration userConfiguration;
+    private final JiraConfiguration jiraConfiguration;
 
-    public JiraRepositoryUpdateImpl(UserConfiguration userConfiguration) {
-        this.userConfiguration = userConfiguration;
+    public JiraRepositoryUpdateImpl(JiraConfiguration jiraConfiguration) {
+        this.jiraConfiguration = jiraConfiguration;
     }
 
     @Override
     public BasicIssue clone(IssueInput issueInput) {
-        jiraRestClient = userConfiguration.getJiraRestClient();
+        jiraRestClient = jiraConfiguration.getJiraRestClient();
         try {
             return jiraRestClient.getIssueClient().createIssue(issueInput).get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -37,6 +37,7 @@ public class JiraRepositoryUpdateImpl implements JiraRepositoryUpdate {
 
     @Override
     public void updateClone(String key, IssueInput issueInput) {
+        jiraRestClient = jiraConfiguration.getJiraRestClient();
         try {
             jiraRestClient.getIssueClient().updateIssue(key, issueInput).get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -46,7 +47,7 @@ public class JiraRepositoryUpdateImpl implements JiraRepositoryUpdate {
 
     @Override
     public String setLinkToIssue(String keyFrom, String keyTo, String linkType) {
-        jiraRestClient = userConfiguration.getJiraRestClient();
+        jiraRestClient = jiraConfiguration.getJiraRestClient();
         LinkIssuesInput linkIssuesInput = new LinkIssuesInput(keyFrom, keyTo, linkType);
         try {
             jiraRestClient.getIssueClient()

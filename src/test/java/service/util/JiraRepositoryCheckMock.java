@@ -24,5 +24,10 @@ public class JiraRepositoryCheckMock implements JiraRepositoryCheck {
 
     }
 
+    @Override
+    public void close() {
+
+    }
+
 
 }

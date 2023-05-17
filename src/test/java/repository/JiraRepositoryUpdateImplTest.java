@@ -6,6 +6,7 @@ import com.atlassian.jira.rest.client.api.domain.BasicIssue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import io.atlassian.util.concurrent.Promise;
+import org.example.configuration.JiraConfiguration;
 import org.example.repository.JiraRepositoryUpdateImpl;
 import org.example.services.LinkTypeEnum;
 import org.junit.Test;
@@ -22,21 +23,27 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class JiraRepositoryUpdateImplTest {
-    @Mock
-    private JiraRestClient jiraRestClient;
+
+
 
     @Mock
     private IssueRestClient issueRestClient;
+
     @Mock
     private Promise<BasicIssue> basicIssuePromise;
+
     @Mock
     private Promise<Void> voidPromise;
+
+    @Mock
+    private JiraConfiguration jiraConfiguration;
+    @Mock
+    private JiraRestClient jiraRestClient;
 
     @InjectMocks
     private JiraRepositoryUpdateImpl jiraRepositoryUpdate;
@@ -49,6 +56,7 @@ public class JiraRepositoryUpdateImplTest {
                 .setSummary("Test Run  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM")))
                 .setIssueTypeId(10003L)
                 .build();
+        when(jiraConfiguration.getJiraRestClient()).thenReturn(jiraRestClient);
         when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
         when(issueRestClient.createIssue(issueInput)).thenReturn(basicIssuePromise);
         when(basicIssuePromise.get(10, TimeUnit.SECONDS)).thenReturn(basicIssue);
@@ -64,13 +72,15 @@ public class JiraRepositoryUpdateImplTest {
                 .setSummary("Test Run  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM")))
                 .setIssueTypeId(10003L)
                 .build();
-        when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
-        when(issueRestClient.createIssue(issueInput)).thenReturn(basicIssuePromise);
-        when(basicIssuePromise.get(10, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
+        lenient().when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
+        lenient().when(issueRestClient.createIssue(issueInput)).thenReturn(basicIssuePromise);
+        lenient().when(basicIssuePromise.get(10, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
         Assertions.assertThrows(RuntimeException.class, () -> {
             jiraRepositoryUpdate.clone(issueInput);
         });
+        jiraConfiguration.close();
     }
+
 
     @Test
     public void updateClone() throws ExecutionException, InterruptedException, TimeoutException {
@@ -79,10 +89,12 @@ public class JiraRepositoryUpdateImplTest {
                 .setSummary("Test Run  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM")))
                 .setIssueTypeId(10003L)
                 .build();
+        when(jiraConfiguration.getJiraRestClient()).thenReturn(jiraRestClient);
         when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
         when(issueRestClient.updateIssue("KEY-20", issueInput)).thenReturn(voidPromise);
         jiraRepositoryUpdate.updateClone("KEY-20", issueInput);
         verify(issueRestClient.updateIssue("KEY-20", issueInput)).get(10, TimeUnit.SECONDS);
+        jiraConfiguration.close();
     }
 
     @Test
@@ -92,30 +104,21 @@ public class JiraRepositoryUpdateImplTest {
                 .setSummary("Test Run  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM")))
                 .setIssueTypeId(10003L)
                 .build();
-        when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
-        when(issueRestClient.updateIssue("KEY-20", issueInput)).thenReturn(voidPromise);
-        when(voidPromise.get(10, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
+        lenient().when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
+        lenient().when(issueRestClient.updateIssue("KEY-20", issueInput)).thenReturn(voidPromise);
+        lenient().when(voidPromise.get(10, TimeUnit.SECONDS)).thenThrow(TimeoutException.class);
         Assertions.assertThrows(RuntimeException.class, () -> {
             jiraRepositoryUpdate.updateClone("KEY-20", issueInput);
         });
+        jiraConfiguration.close();
     }
-
-//    @Test
-//    public void setLinkToIssue() throws ExecutionException, InterruptedException, TimeoutException {
-//        LinkIssuesInput linkIssuesInput = new LinkIssuesInput("", "", "");
-//        when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
-//        when(issueRestClient.linkIssue(linkIssuesInput)).thenReturn(voidPromise1);
-//        jiraRepositoryUpdate.setLinkToIssue("", "", "");
-//
-//        Assertions.assertEquals("KEY-19",jiraRepositoryUpdate.setLinkToIssue("", "", ""));
-//
-//    }
 
     @Test
     public void setLinkToIssueException() {
-        when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
+        lenient().when(jiraRestClient.getIssueClient()).thenReturn(issueRestClient);
         Assertions.assertThrows(RuntimeException.class, () -> {
             jiraRepositoryUpdate.setLinkToIssue("KEY-19", "KEY-20", LinkTypeEnum.RELATES.linkType);
         });
+        jiraConfiguration.close();
     }
 }

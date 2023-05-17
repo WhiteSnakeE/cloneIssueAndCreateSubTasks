@@ -2,7 +2,7 @@ package org.example.repository;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
-import org.example.configuration.UserConfiguration;
+import org.example.configuration.JiraConfiguration;
 import org.example.repository.interfaces.JiraRepositorySubtaskCreator;
 import org.springframework.stereotype.Repository;
 
@@ -14,16 +14,16 @@ import java.util.concurrent.TimeoutException;
 public class JiraRepositorySubtaskCreatorImpl implements JiraRepositorySubtaskCreator {
 
 
-    private final UserConfiguration userConfiguration;
+    private final JiraConfiguration jiraConfiguration;
 
-    public JiraRepositorySubtaskCreatorImpl(UserConfiguration userConfiguration) {
-        this.userConfiguration = userConfiguration;
+    public JiraRepositorySubtaskCreatorImpl(JiraConfiguration jiraConfiguration) {
+        this.jiraConfiguration = jiraConfiguration;
     }
 
     @Override
     public String createSubTask(IssueInput subtask) {
         String key;
-        JiraRestClient jiraRestClient  = userConfiguration.getJiraRestClient();
+        JiraRestClient jiraRestClient  = jiraConfiguration.getJiraRestClient();
         try {
             key = jiraRestClient.getIssueClient().createIssue(subtask).get(10, TimeUnit.SECONDS).getKey();
         } catch (InterruptedException | TimeoutException | ExecutionException e) {

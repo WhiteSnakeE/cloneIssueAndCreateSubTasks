@@ -5,7 +5,7 @@ import com.atlassian.jira.rest.client.api.RestClientException;
 import com.atlassian.jira.rest.client.api.SearchRestClient;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import lombok.extern.slf4j.Slf4j;
-import org.example.configuration.UserConfiguration;
+import org.example.configuration.JiraConfiguration;
 import org.example.exeptions.IssueNotExistException;
 import org.example.model.IssueInstance;
 import org.example.repository.interfaces.JiraRepositoryCheck;
@@ -21,25 +21,25 @@ import java.util.concurrent.TimeoutException;
 @Profile({"dev"})
 public class JiraRepositoryCheckImpl implements JiraRepositoryCheck {
 
-    private final UserConfiguration userConfiguration;
+    private final JiraConfiguration jiraConfiguration;
 
     private final IssueInstance issueInstance;
 
-    public JiraRepositoryCheckImpl (UserConfiguration userConfiguration, IssueInstance issueInstance) {
-        this.userConfiguration = userConfiguration;
+    public JiraRepositoryCheckImpl (JiraConfiguration jiraConfiguration, IssueInstance issueInstance) {
+        this.jiraConfiguration = jiraConfiguration;
         this.issueInstance = issueInstance;
     }
 
     @Override
     public SearchResult isProjectExist (String jql) {
-        JiraRestClient jiraRestClient = userConfiguration.getJiraRestClient();
+        JiraRestClient jiraRestClient = jiraConfiguration.getJiraRestClient();
         SearchRestClient searchRestClient = jiraRestClient.getSearchClient();
         SearchResult searchResult;
         try {
             searchResult = searchRestClient.searchJql(jql, 1, 0, null).get(10, TimeUnit.SECONDS);
             issueInstance.setIssue(searchResult.getIssues().iterator().next());
             return searchResult;
-        } catch (RestClientException | ExecutionException e) {
+        } catch (ExecutionException | RestClientException e) {
             throw new IssueNotExistException(e);
         } catch (TimeoutException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -48,7 +48,7 @@ public class JiraRepositoryCheckImpl implements JiraRepositoryCheck {
 
     @Override
     public void close() {
-        userConfiguration.close();
+        jiraConfiguration.close();
     }
 
 
