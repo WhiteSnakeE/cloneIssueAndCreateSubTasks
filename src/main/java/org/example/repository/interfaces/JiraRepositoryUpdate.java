@@ -10,4 +10,6 @@ public interface JiraRepositoryUpdate {
 
     String setLinkToIssue(String keyFrom,String keyTo,String linkType);
 
+
+
 }

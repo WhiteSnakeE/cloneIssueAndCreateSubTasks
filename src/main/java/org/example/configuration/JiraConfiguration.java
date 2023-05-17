@@ -4,29 +4,25 @@ import com.atlassian.jira.rest.client.api.AuthenticationHandler;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.auth.BasicHttpAuthenticationHandler;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 
 import java.net.URI;
 
-@Configuration
+
 @Profile({"dev"})
+@Slf4j
 public class JiraConfiguration {
 
-    private String user;
-    public void setUser(String user){
-        this.user = user;
-    }
 
-    @Bean
-    public JiraRestClient jiraRestClient(
-            @Value("${jira.user}") String jiraUser,
-            @Value("${jira.password}") String jiraPassword,
-            @Value("${jira.url}") String url) {
+    public JiraRestClient jiraRestClient( String user, String password,
+            String url) {
+        log.info("USERNAME {}", user);
+        log.info("PASSWORD {}", password);
+        log.info("URL {}", url);
         AsynchronousJiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-        AuthenticationHandler authenticationHandler = new BasicHttpAuthenticationHandler(user, jiraPassword);
+        AuthenticationHandler authenticationHandler = new BasicHttpAuthenticationHandler(user, password);
         return factory.createWithAuthenticationHandler(URI.create(url), authenticationHandler);
     }
 }

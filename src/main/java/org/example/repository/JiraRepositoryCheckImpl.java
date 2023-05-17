@@ -5,6 +5,7 @@ import com.atlassian.jira.rest.client.api.RestClientException;
 import com.atlassian.jira.rest.client.api.SearchRestClient;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import lombok.extern.slf4j.Slf4j;
+import org.example.configuration.UserConfiguration;
 import org.example.exeptions.IssueNotExistException;
 import org.example.model.IssueInstance;
 import org.example.repository.interfaces.JiraRepositoryCheck;
@@ -20,18 +21,19 @@ import java.util.concurrent.TimeoutException;
 @Profile({"dev"})
 public class JiraRepositoryCheckImpl implements JiraRepositoryCheck {
 
-
-    private final SearchRestClient searchRestClient;
+    private final UserConfiguration userConfiguration;
 
     private final IssueInstance issueInstance;
 
-    public JiraRepositoryCheckImpl (JiraRestClient jiraRestClient, IssueInstance issueInstance) {
-        searchRestClient = jiraRestClient.getSearchClient();
+    public JiraRepositoryCheckImpl (UserConfiguration userConfiguration, IssueInstance issueInstance) {
+        this.userConfiguration = userConfiguration;
         this.issueInstance = issueInstance;
     }
 
     @Override
     public SearchResult isProjectExist (String jql) {
+        JiraRestClient jiraRestClient = userConfiguration.getJiraRestClient();
+        SearchRestClient searchRestClient = jiraRestClient.getSearchClient();
         SearchResult searchResult;
         try {
             searchResult = searchRestClient.searchJql(jql, 1, 0, null).get(10, TimeUnit.SECONDS);
@@ -39,9 +41,14 @@ public class JiraRepositoryCheckImpl implements JiraRepositoryCheck {
             return searchResult;
         } catch (RestClientException | ExecutionException e) {
             throw new IssueNotExistException(e);
-        } catch (  TimeoutException | InterruptedException e) {
+        } catch (TimeoutException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void close() {
+        userConfiguration.close();
     }
 
 

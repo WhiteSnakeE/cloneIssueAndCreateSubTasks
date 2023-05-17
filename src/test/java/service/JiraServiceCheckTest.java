@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 public class JiraServiceCheckTest {
 
 
-    private final JiraServiceCheck jiraServiceCheck = new JiraServiceCheck(new JiraRepositoryCheckMock(),mock(IssueInstance.class));
+    private final JiraServiceCheck jiraServiceCheck = new JiraServiceCheck(new JiraRepositoryCheckMock(), jiraConfiguration, mock(IssueInstance.class));
 
     @Test
     public void checkIfIssueExistTest () {

@@ -17,12 +17,9 @@ import java.util.stream.StreamSupport;
 @Service
 public class JiraServiceClone {
 
-
-
     private final JiraRepositoryUpdate jiraRepositoryUpdate;
 
     private static final String name = "CLONE - ";
-
 
     public JiraServiceClone (
             JiraRepositoryUpdate jiraRepositoryUpdate) {
@@ -31,7 +28,8 @@ public class JiraServiceClone {
 
     public String setSubtaskLinkToClone(IssueLink issueLink,String cloneKey,String subTaskKey){
         jiraRepositoryUpdate.setLinkToIssue(issueLink.getTargetIssueKey(),cloneKey,LinkTypeEnum.RELATES.linkType);
-        return jiraRepositoryUpdate.setLinkToIssue(subTaskKey, cloneKey, LinkTypeEnum.RELATES.linkType);
+        String key =  jiraRepositoryUpdate.setLinkToIssue(subTaskKey, cloneKey, LinkTypeEnum.RELATES.linkType);
+        return key;
     }
 
     public String cloneIssue (Issue issue) {

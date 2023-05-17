@@ -43,7 +43,7 @@ public class JiraRepositoryCheckImplTest {
     @Before
     public void setup(){
         when(jiraRestClient.getSearchClient()).thenReturn(searchRestClient);
-        jiraRepositoryCheckImpl = new JiraRepositoryCheckImpl(jiraRestClient,issueInstance);
+        jiraRepositoryCheckImpl = new JiraRepositoryCheckImpl(jiraRestClient,issueInstance, userCongfig);
     }
 
     @Test

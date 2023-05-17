@@ -2,6 +2,7 @@ package org.example.services;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueLink;
+import org.example.configuration.UserConfiguration;
 import org.example.model.IssueInstance;
 import org.example.repository.interfaces.JiraRepositoryCheck;
 import org.springframework.stereotype.Service;
@@ -13,21 +14,26 @@ import java.util.Objects;
 
 @Service
 public class JiraServiceCheck {
+
     private static final String jql = "key = ";
+
     private final JiraRepositoryCheck jiraRepositoryCheck;
+
+    private final UserConfiguration userConfiguration;
 
     private final IssueInstance issueInstance;
 
-    public JiraServiceCheck (JiraRepositoryCheck jiraRepositoryCheck, IssueInstance issueInstance) {
+    public JiraServiceCheck(JiraRepositoryCheck jiraRepositoryCheck, UserConfiguration userConfiguration, IssueInstance issueInstance) {
         this.jiraRepositoryCheck = jiraRepositoryCheck;
+        this.userConfiguration = userConfiguration;
         this.issueInstance = issueInstance;
     }
 
-    public String checkIfIssueExist (String key) {
+    public String checkIfIssueExist(String key) {
         return jiraRepositoryCheck.isProjectExist(jql + key).getIssues().iterator().next().getKey();
     }
 
-    public boolean checkIfTestCasesExist (Issue issue) {
+    public boolean checkIfTestCasesExist(Issue issue) {
         List<IssueLink> issueLinks = new ArrayList<>();
         if (issue.getIssueLinks() == null) {
             return false;
@@ -39,6 +45,10 @@ public class JiraServiceCheck {
         }
         issueInstance.setIssueLinkList(issueLinks);
         return !issueLinks.isEmpty();
+    }
+
+    public void setUserAndPassword(String user, String password) {
+       userConfiguration.createJiraRestClient(user,password);
     }
 
 }
