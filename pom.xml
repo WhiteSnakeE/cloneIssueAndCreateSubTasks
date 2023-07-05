@@ -195,13 +195,11 @@
 
     <repositories>
         <repository>
-            <id>camunda-bpm-nexus</id>
-            <name>camunda-bpm-nexus</name>
-            <url>
-                https://camunda.jfrog.io/artifactory/private/
-            </url>
+            <id>atlassian-external</id>
+            <url>https://packages.atlassian.com/mvn/maven-atlassian-external/</url>
         </repository>
 
+        <!-- Other repositories if needed -->
     </repositories>
     <build>
         <plugins>

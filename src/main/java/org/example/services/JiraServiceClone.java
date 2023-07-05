@@ -1,9 +1,6 @@
 package org.example.services;
 
-import com.atlassian.jira.rest.client.api.domain.BasicIssue;
-import com.atlassian.jira.rest.client.api.domain.Issue;
-import com.atlassian.jira.rest.client.api.domain.IssueFieldId;
-import com.atlassian.jira.rest.client.api.domain.IssueLink;
+import com.atlassian.jira.rest.client.api.domain.*;
 import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldValue;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
@@ -40,6 +37,7 @@ public class JiraServiceClone {
     }
 
     public BasicIssue createCloneIssue (Issue issue) {
+        System.out.println(issue.getComponents());
         IssueInput issueInput = new IssueInputBuilder()
                 .setSummary(name + issue.getSummary())
                 .setDescription(issue.getDescription())
@@ -55,7 +53,7 @@ public class JiraServiceClone {
 
     public IssueInput updateAssigneeAndAttachment (Issue issue) {
         IssueInputBuilder builder = new IssueInputBuilder();
-        Optional.ofNullable(issue.getAssignee()).ifPresent(builder::setAssignee);
+        Optional.ofNullable(issue.getComponents()).ifPresent(builder::setComponents);
         Optional.ofNullable(issue.getAttachments()).ifPresent(attachments -> builder.setFieldValue(String.valueOf(IssueFieldId.ATTACHMENT_FIELD), this.toListOfComplexIssueInputFieldValueWithSingleKey(attachments, "attachment")));
         return builder.build();
     }

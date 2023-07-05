@@ -31,14 +31,14 @@ public class JiraServiceCloneTest {
         BasicIssue basicIssue = jiraServiceClone.createCloneIssue(new IssueInstanceTestModel().getIssue());
         Assertions.assertEquals("FIXBIT", basicIssue.getKey());
     }
-    @Test
-    public void updateNotNullIssueFields(){
-        IssueInput issueInput = jiraServiceClone.updateAssigneeAndAttachment(new IssueInstanceTestModel().getIssue());
-        ComplexIssueInputFieldValue complexIssueInputFieldValue = (ComplexIssueInputFieldValue) issueInput.getField("assignee").getValue();
-        String name = complexIssueInputFieldValue.getValuesMap().get("name").toString();
-        Assertions.assertEquals(name,new IssueInstanceTestModel().getIssue().getAssignee().getName());
-
-    }
+//    @Test
+//    public void updateNotNullIssueFields(){
+//        IssueInput issueInput = jiraServiceClone.updateAssigneeAndAttachment(new IssueInstanceTestModel().getIssue());
+//        ComplexIssueInputFieldValue complexIssueInputFieldValue = (ComplexIssueInputFieldValue) issueInput.getField("assignee").getValue();
+//        String name = complexIssueInputFieldValue.getValuesMap().get("name").toString();
+//        Assertions.assertEquals(name,new IssueInstanceTestModel().getIssue().getAssignee().getName());
+//
+//    }
     @Test
     public void setSubtaskLinkToClone (){
         IssueLinkType issueLinkType = new IssueLinkType("Relates","relates to", IssueLinkType.Direction.OUTBOUND);

@@ -18,8 +18,8 @@ public class CloseJiraRestClient implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        jiraRepositoryCheck.close();
-        log.info("Process was ended!");
+//        jiraRepositoryCheck.close();
+//        log.info("Process was ended!");
 
     }
 }

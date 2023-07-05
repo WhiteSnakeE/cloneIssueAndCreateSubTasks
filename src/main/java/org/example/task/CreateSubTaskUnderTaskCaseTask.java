@@ -31,10 +31,10 @@ public class CreateSubTaskUnderTaskCaseTask implements JavaDelegate {
 
     @Override
     public void execute (DelegateExecution delegateExecution) {
-        ProcessEnv processEnv = new ProcessEnv(delegateExecution);
-        IssueLink issueLink = issueLinkConverter.convertToIssueLink(processEnv.getTaskCase());
-        String key = jiraServiceSubTaskCreator.createSubTask(issueLink,issueInstance.getIssue().getProject().getKey());
-        processEnv.setSubtaskKey(key);
-        log.info("subtask key is {}",key);
+//        ProcessEnv processEnv = new ProcessEnv(delegateExecution);
+//        IssueLink issueLink = issueLinkConverter.convertToIssueLink(processEnv.getTaskCase());
+//        String key = jiraServiceSubTaskCreator.createSubTask(issueLink,issueInstance.getIssue().getProject().getKey());
+//        processEnv.setSubtaskKey(key);
+//        log.info("subtask key is {}",key);
     }
 }

@@ -49,7 +49,7 @@ public class CloneIssueAndCreateSubtaskFlowTest {
 
     @Before
     public void setup() {
-        //  Mocks.register("PrepareIssueKeyInTasklist", new FindIssueByProjectKeyTask(jiraServiceCheck));
+
         Mocks.register("FindIssueByProjectKey", new FindIssueByProjectKeyTask(jiraServiceCheck));
         Mocks.register("CheckTaskCasesInIssue", new CheckTaskCasesInIssueTask(jiraServiceCheck, mock(IssueInstance.class)));
         Mocks.register("CollectTaskCases", new CollectTaskCasesTask(mock(IssueInstance.class), new IssueLinkConverter()));

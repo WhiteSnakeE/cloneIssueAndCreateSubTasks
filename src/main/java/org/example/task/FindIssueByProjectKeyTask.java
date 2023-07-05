@@ -20,12 +20,10 @@ public class FindIssueByProjectKeyTask implements JavaDelegate {
     @Override
     public void execute (DelegateExecution delegateExecution)  {
         ProcessEnv processEnv = new ProcessEnv(delegateExecution);
-        String user = (String) delegateExecution.getVariable("JiraLogin");
-        String password = (String) delegateExecution.getVariable("JiraPassword");
-        String response = (String) delegateExecution.getVariable("IssueKey");
-        jiraServiceCheck.setUserAndPassword(user,password);
-        String issueKey = jiraServiceCheck.checkIfIssueExist(response);
-        processEnv.setIssueKey(issueKey);
-        log.info("project key is {}", issueKey);
+        String input = (String) delegateExecution.getVariable("IssueKey");
+        log.info("project key is {}", input);
+        String response = jiraServiceCheck.checkIfIssueExist(input);
+        processEnv.setIssueKey(response);
+        log.info("project key is {}", response);
     }
 }

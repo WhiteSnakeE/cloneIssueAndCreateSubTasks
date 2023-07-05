@@ -5,8 +5,8 @@ import com.atlassian.jira.rest.client.api.RestClientException;
 import com.atlassian.jira.rest.client.api.SearchRestClient;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.example.configuration.JiraConfiguration;
-import org.example.exeptions.IssueNotExistException;
 import org.example.model.IssueInstance;
 import org.example.repository.interfaces.JiraRepositoryCheck;
 import org.springframework.context.annotation.Profile;
@@ -35,12 +35,14 @@ public class JiraRepositoryCheckImpl implements JiraRepositoryCheck {
         JiraRestClient jiraRestClient = jiraConfiguration.getJiraRestClient();
         SearchRestClient searchRestClient = jiraRestClient.getSearchClient();
         SearchResult searchResult;
+//        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         try {
             searchResult = searchRestClient.searchJql(jql, 1, 0, null).get(10, TimeUnit.SECONDS);
             issueInstance.setIssue(searchResult.getIssues().iterator().next());
             return searchResult;
         } catch (ExecutionException | RestClientException e) {
-            throw new IssueNotExistException(e);
+//            log.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            throw new BpmnError("IssueNotExistError");
         } catch (TimeoutException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -50,6 +52,5 @@ public class JiraRepositoryCheckImpl implements JiraRepositoryCheck {
     public void close() {
         jiraConfiguration.close();
     }
-
 
 }

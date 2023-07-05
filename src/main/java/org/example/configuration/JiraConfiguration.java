@@ -1,10 +1,10 @@
 package org.example.configuration;
-
 import com.atlassian.jira.rest.client.api.AuthenticationHandler;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.auth.BasicHttpAuthenticationHandler;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +28,18 @@ public class JiraConfiguration {
         jiraRestClient = jiraRestClient(user, password, url);
     }
 
-
     private JiraRestClient jiraRestClient(String user, String password, String url) {
+        AsynchronousJiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
+        AuthenticationHandler authenticationHandler = new BasicHttpAuthenticationHandler(user, password);
+        JiraRestClient restClient = null;
 
-            AsynchronousJiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-            AuthenticationHandler authenticationHandler = new BasicHttpAuthenticationHandler(user, password);
-            return factory.createWithAuthenticationHandler(URI.create(url), authenticationHandler);
-
+        try {
+            restClient =  factory.createWithAuthenticationHandler(URI.create(url), authenticationHandler);
+        }catch (Exception e){
+            log.info("Auth failed!");
+            throw new BpmnError("AuthError");
+        }
+        return restClient;
 
     }
 

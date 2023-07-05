@@ -23,9 +23,9 @@ public class CloneIssueTask implements JavaDelegate {
 
     @Override
     public void execute (DelegateExecution delegateExecution) {
-        ProcessEnv processEnv = new ProcessEnv(delegateExecution);
-        String cloneKey =  jiraServiceClone.cloneIssue(issueInstance.getIssue());
-        processEnv.setCloneKey(cloneKey);
-        log.info("issue cloned! {} ", cloneKey);
+//        ProcessEnv processEnv = new ProcessEnv(delegateExecution);
+//        String cloneKey =  jiraServiceClone.cloneIssue(issueInstance.getIssue());
+//        processEnv.setCloneKey(cloneKey);
+//        log.info("issue cloned! {} ", cloneKey);
     }
 }
